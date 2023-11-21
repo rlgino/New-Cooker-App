@@ -1,6 +1,5 @@
 import MessageListItem from '../components/MessageListItem';
 import { useState } from 'react';
-import { Message, getMessages } from '../data/messages';
 import {
   IonContent,
   IonHeader,
@@ -13,14 +12,16 @@ import {
   useIonViewWillEnter
 } from '@ionic/react';
 import './Home.css';
+import Receipt from '../domain/receipt';
+import { listReceipts } from '../data/receipts';
 
 const Home: React.FC = () => {
-
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Receipt[]>([]);
 
   useIonViewWillEnter(() => {
-    const msgs = getMessages();
-    setMessages(msgs);
+    listReceipts().then(receipts => {
+      setMessages(receipts);
+    });
   });
 
   const refresh = (e: CustomEvent) => {

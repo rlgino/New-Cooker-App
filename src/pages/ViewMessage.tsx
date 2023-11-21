@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Message, getMessage } from '../data/messages';
 import {
+  IonAvatar,
   IonBackButton,
   IonButtons,
   IonContent,
@@ -16,14 +16,18 @@ import {
 import { personCircle } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import './ViewMessage.css';
+import Receipt from '../domain/receipt';
+import { findReceipt } from '../data/receipts';
 
 function ViewMessage() {
-  const [message, setMessage] = useState<Message>();
+  const [message, setMessage] = useState<Receipt>();
   const params = useParams<{ id: string }>();
 
   useIonViewWillEnter(() => {
-    const msg = getMessage(parseInt(params.id, 10));
-    setMessage(msg);
+    findReceipt(params.id).then(rec => {
+      setMessage(rec)
+      console.log(rec.image);
+    }); 
   });
 
   return (
@@ -40,12 +44,14 @@ function ViewMessage() {
         {message ? (
           <>
             <IonItem>
-              <IonIcon aria-hidden="true" icon={personCircle} color="primary"></IonIcon>
+              <IonAvatar aria-hidden="true" slot="start">
+                <img alt="" src={message.image.toString()} />
+              </IonAvatar>
               <IonLabel className="ion-text-wrap">
                 <h2>
-                  {message.fromName}
+                  {message.name}
                   <span className="date">
-                    <IonNote>{message.date}</IonNote>
+                    <IonNote>{message.description}</IonNote>
                   </span>
                 </h2>
                 <h3>
@@ -55,7 +61,7 @@ function ViewMessage() {
             </IonItem>
 
             <div className="ion-padding">
-              <h1>{message.subject}</h1>
+              <h1>{message.image}</h1>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
