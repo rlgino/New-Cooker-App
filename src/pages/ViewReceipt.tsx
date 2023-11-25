@@ -5,7 +5,6 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
   IonItem,
   IonLabel,
   IonNote,
@@ -13,20 +12,18 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import { personCircle } from 'ionicons/icons';
 import { useParams } from 'react-router';
-import './ViewMessage.css';
+import './ViewReceipt.css';
 import Receipt from '../domain/receipt';
 import { findReceipt } from '../data/receipts';
 
-function ViewMessage() {
+function ViewReceipt() {
   const [message, setMessage] = useState<Receipt>();
   const params = useParams<{ id: string }>();
 
   useIonViewWillEnter(() => {
     findReceipt(params.id).then(rec => {
       setMessage(rec)
-      console.log(rec.image);
     }); 
   });
 
@@ -81,4 +78,4 @@ function ViewMessage() {
   );
 }
 
-export default ViewMessage;
+export default ViewReceipt;

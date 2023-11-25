@@ -57,7 +57,7 @@ export const getReceipt = async (id: String): Promise<Receipt> => {
             }
             const data = snapshot.val();
             const rec: Receipt = {
-                id: "data.id",
+                id: snapshot.key ? snapshot.key : "",
                 name: data.name,
                 description: "",
                 image: data.image

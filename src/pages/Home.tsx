@@ -1,4 +1,4 @@
-import MessageListItem from '../components/MessageListItem';
+import MessageListItem from '../components/ReceiptListItem';
 import { useState } from 'react';
 import {
   IonContent,
@@ -16,11 +16,11 @@ import Receipt from '../domain/receipt';
 import { listReceipts } from '../data/receipts';
 
 const Home: React.FC = () => {
-  const [messages, setMessages] = useState<Receipt[]>([]);
+  const [receipts, setReceipts] = useState<Receipt[]>([]);
 
   useIonViewWillEnter(() => {
     listReceipts().then(receipts => {
-      setMessages(receipts);
+      setReceipts(receipts);
     });
   });
 
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
         </IonHeader>
 
         <IonList>
-          {messages.map(m => <MessageListItem key={m.id} message={m} />)}
+          {receipts.map(receipt => <MessageListItem key={receipt.id} receipt={receipt} />)}
         </IonList>
       </IonContent>
     </IonPage>
