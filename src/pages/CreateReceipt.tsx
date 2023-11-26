@@ -11,6 +11,7 @@ import {
 import { useParams } from 'react-router';
 import Receipt from '../domain/receipt';
 import { findReceipt } from '../data/receipts';
+import ReceiptForm from '../components/ReceiptForm';
 
 function CreateReceipt() {
   const [receipt, setReceipt] = useState<Receipt>();
@@ -37,7 +38,7 @@ function CreateReceipt() {
       </IonHeader>
 
       <IonContent fullscreen>
-
+        <ReceiptForm receipt={receipt} />
       </IonContent>
     </IonPage>
   );

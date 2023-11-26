@@ -14,6 +14,8 @@ Meanwhile you can download the code and run `ionic run build` and pasting your f
 
 ### Structure
 TBD
+Firebase <-------------------------New Cooker App 
+^-- Go Back (sort receipts by ingredients) --^
 
 ## Technologies
 

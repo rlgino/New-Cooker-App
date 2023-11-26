@@ -1,4 +1,4 @@
-import MessageListItem from '../components/ReceiptListItem';
+import ReceiptListItem from '../components/ReceiptListItem';
 import { useState } from 'react';
 import {
   IonContent,
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
         </IonHeader>
 
         <IonList>
-          {receipts.map(receipt => <MessageListItem key={receipt.id} receipt={receipt} />)}
+          {receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />)}
         </IonList>
       </IonContent>
     </IonPage>

@@ -10,7 +10,7 @@ interface ReceiptListItemProps {
   receipt: Receipt;
 }
 
-const MessageListItem: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) => {
+const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) => {
   return (
     <IonItem routerLink={`/receipt/${receipt.id}`} detail={false}>
       <div slot="start" className="dot dot-unread"></div>
@@ -30,4 +30,4 @@ const MessageListItem: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) =
   );
 };
 
-export default MessageListItem;
+export default ReceiptListItem;
