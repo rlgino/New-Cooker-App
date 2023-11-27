@@ -48,3 +48,9 @@
 #view-message-page p {
   line-height: 1.4;
 }
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

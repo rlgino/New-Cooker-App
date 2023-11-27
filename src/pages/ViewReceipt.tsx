@@ -5,6 +5,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonNote,
@@ -16,6 +17,7 @@ import { useParams } from 'react-router';
 import './ViewReceipt.css';
 import Receipt from '../domain/receipt';
 import { findReceipt } from '../data/receipts';
+import { pencil } from 'ionicons/icons';
 
 function ViewReceipt() {
   const [message, setMessage] = useState<Receipt>();
@@ -24,7 +26,7 @@ function ViewReceipt() {
   useIonViewWillEnter(() => {
     findReceipt(params.id).then(rec => {
       setMessage(rec)
-    }); 
+    });
   });
 
   return (
@@ -32,7 +34,12 @@ function ViewReceipt() {
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton text="Inbox" defaultHref="/home"></IonBackButton>
+            <div className='header'>
+              <IonBackButton text="Inbox" defaultHref="/home"></IonBackButton>
+              <IonItem routerLink={`/new-receipt/${params.id}`} detail={false}>
+                <IonIcon icon={pencil} size="large" color="primary"></IonIcon>
+              </IonItem>
+            </div>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import {
   IonContent,
   IonHeader,
+  IonIcon,
+  IonItem,
   IonList,
   IonPage,
   IonRefresher,
@@ -14,6 +16,7 @@ import {
 import './Home.css';
 import Receipt from '../domain/receipt';
 import { listReceipts } from '../data/receipts';
+import { add } from 'ionicons/icons';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
@@ -34,7 +37,12 @@ const Home: React.FC = () => {
     <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Inbox</IonTitle>
+          <div className='header'>
+            <IonTitle>Inbox</IonTitle>
+            <IonItem routerLink={`/new-receipt`} detail={false}>
+              <IonIcon icon={add} size="large" color="primary"></IonIcon>
+            </IonItem>
+          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

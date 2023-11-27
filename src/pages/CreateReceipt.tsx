@@ -20,6 +20,8 @@ function CreateReceipt() {
 
   useIonViewWillEnter(() => {
     if (params.id) {
+      console.log("Finding receipt " + params.id);
+      
       findReceipt(params.id).then(rec => {
         setReceipt(rec)
         setTitle(rec.id)

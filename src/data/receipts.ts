@@ -6,11 +6,10 @@ export const listReceipts = async () => {
   return getReceipts()
 };
 
-export const createReceipt = (receipt: Receipt, image: any) => {
-  uploadImage(image, `${receipt.id}.jpg`).then(url => {
-    receipt.image = url
-    setReceipt(receipt)
-  })
+export const createReceipt = async (receipt: Receipt, image: any) => {
+  const url = await uploadImage(image, `${receipt.id}.jpg`)
+  receipt.image = url
+  await setReceipt(receipt)
 }
 
-export const findReceipt = (id: String) => getReceipt(id);
+export const findReceipt = async (id: String) => getReceipt(id);
