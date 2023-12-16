@@ -7,6 +7,7 @@
 .receipt-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-gap: .5rem;
 }
 
 .avatar {
@@ -30,6 +31,10 @@
     padding-right: .5em;
 }
 
+.more-filters {
+    color: #292526;
+}
+
 form {
     width: 300px;
     height: 44px;
@@ -51,5 +56,21 @@ input {
 }
 
 .searchIcon {
+    margin-right: .5rem;
     color: rgb(217, 216, 216);
+}
+
+.add{
+	width: 6rem;
+    height: 6rem;
+    color: #292526;
+}
+
+.actions {
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

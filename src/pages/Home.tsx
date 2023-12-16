@@ -4,18 +4,18 @@ import {
   IonAvatar,
   IonContent,
   IonIcon,
+  IonItem,
   IonList,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonSearchbar,
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
 import './Home.css';
 import Receipt from '../domain/receipt';
 import { listReceipts } from '../data/receipts';
-import { search, searchSharp, settings } from 'ionicons/icons';
+import { add, search, settings } from 'ionicons/icons';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
@@ -55,15 +55,21 @@ const Home: React.FC = () => {
             <input type="search" id="query" name="q"
               placeholder="Search..."
               aria-label="Search through site content" />
-              <IonIcon icon={search} size='large' className='searchIcon'></IonIcon>
+            <IonIcon icon={search} size='large' className='searchIcon'></IonIcon>
           </form>
-          <IonIcon icon={settings} size='large'></IonIcon>
+          <IonIcon icon={settings} size='large' className='more-filters'></IonIcon>
         </div>
 
         <IonList className='receipt-grid'>
           {receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />)}
         </IonList>
       </IonContent>
+
+      <div className="actions">
+        <IonItem routerLink={`/new-receipt`} detail={false}>
+          <IonIcon icon={add} size='large' className='add'/>
+        </IonItem>
+      </div>
     </IonPage>
   );
 };
