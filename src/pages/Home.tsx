@@ -1,22 +1,21 @@
 import ReceiptListItem from '../components/ReceiptListItem';
 import { useState } from 'react';
 import {
+  IonAvatar,
   IonContent,
-  IonHeader,
   IonIcon,
-  IonItem,
   IonList,
   IonPage,
   IonRefresher,
   IonRefresherContent,
-  IonTitle,
+  IonSearchbar,
   IonToolbar,
   useIonViewWillEnter
 } from '@ionic/react';
 import './Home.css';
 import Receipt from '../domain/receipt';
 import { listReceipts } from '../data/receipts';
-import { add } from 'ionicons/icons';
+import { search, searchSharp, settings } from 'ionicons/icons';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
@@ -35,30 +34,33 @@ const Home: React.FC = () => {
 
   return (
     <IonPage id="home-page">
-      <IonHeader>
-        <IonToolbar>
-          <div className='header'>
-            <IonTitle>Inbox</IonTitle>
-            <IonItem routerLink={`/new-receipt`} detail={false}>
-              <IonIcon icon={add} size="large" color="primary"></IonIcon>
-            </IonItem>
+      <IonToolbar>
+        <div className='header'>
+          <div className='welcome'>
+            <div>Welcome 👋</div>
+            <h3 className='title'>Gino Luraschi</h3>
           </div>
-        </IonToolbar>
-      </IonHeader>
+          <IonAvatar aria-hidden="true" slot="start" className='avatar'>
+            <img alt="" src="/favicon.png" />
+          </IonAvatar>
+        </div>
+      </IonToolbar>
       <IonContent fullscreen>
         <IonRefresher slot="fixed" onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">
-              Inbox
-            </IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <div className='filters'>
+          <form id="form" role="search">
+            <input type="search" id="query" name="q"
+              placeholder="Search..."
+              aria-label="Search through site content" />
+              <IonIcon icon={search} size='large' className='searchIcon'></IonIcon>
+          </form>
+          <IonIcon icon={settings} size='large'></IonIcon>
+        </div>
 
-        <IonList>
+        <IonList className='receipt-grid'>
           {receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />)}
         </IonList>
       </IonContent>
