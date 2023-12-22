@@ -52,7 +52,7 @@ export const getReceipt = async (id: String): Promise<Receipt> => {
             const rec: Receipt = {
                 id: snapshot.key ? snapshot.key : "",
                 name: data.name,
-                description: "",
+                description: data.description,
                 image: data.image
             };
             resolve(rec)
