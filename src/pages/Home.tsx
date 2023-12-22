@@ -67,7 +67,7 @@ const Home: React.FC = () => {
 
       <div className="actions">
         <IonItem routerLink={`/new-receipt`} detail={false}>
-          <IonIcon icon={add} size='large' className='add'/>
+          <IonIcon icon={add} size='large' className='add' />
         </IonItem>
       </div>
     </IonPage>
