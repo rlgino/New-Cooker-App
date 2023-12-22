@@ -19,7 +19,7 @@ function CreateReceipt() {
   const params = useParams<{ id: string }>();
 
   useIonViewWillEnter(() => {
-    if (params.id) {      
+    if (params.id) {
       findReceipt(params.id).then(rec => {
         setReceipt(rec)
         setTitle(rec.id)
@@ -37,7 +37,7 @@ function CreateReceipt() {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent>
         <ReceiptForm receipt={receipt} />
       </IonContent>
     </IonPage>

@@ -49,9 +49,9 @@ const Home: React.FC = () => {
         </IonRefresher>
 
         <div className='filters'>
-          <form id="form" role="search">
+          <form id="form" role="search" className='filters-form'>
             <input type="search" id="query" name="q"
-              placeholder="Search..."
+              placeholder="Search..." className='filters-input'
               aria-label="Search through site content" />
             <IonIcon icon={search} size='large' className='searchIcon'></IonIcon>
           </form>
