@@ -14,11 +14,17 @@ import './Home.css';
 import Receipt from '../domain/receipt';
 import { listReceipts } from '../data/receipts';
 import { options, search } from 'ionicons/icons';
+import { getCurrentUser, userSignOut } from '../app/auth';
+import { useHistory } from 'react-router';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
+  const history = useHistory();
 
   useIonViewWillEnter(() => {
+    const user = getCurrentUser()
+    if (!user) history.push("/register")
+
     listReceipts().then(receipts => {
       setReceipts(receipts);
     });
@@ -30,6 +36,16 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
+
+  const signOut = () => {
+    userSignOut()
+      .then(() => history.push("/login"))
+      .catch(err => {
+        console.log(err)
+        alert("Error al salir de su usuario")
+      })
+  }
+
   return (
     <IonPage id="home-page">
       <IonToolbar>
@@ -38,7 +54,7 @@ const Home: React.FC = () => {
             <div>Welcome 👋</div>
             <h3 className='title'>Gino Luraschi</h3>
           </div>
-          <IonAvatar aria-hidden="true" slot="start" className='avatar'>
+          <IonAvatar aria-hidden="true" slot="start" className='avatar' onClick={() => signOut()}>
             <img alt="" src="/favicon.png" />
           </IonAvatar>
         </div>

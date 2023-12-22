@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import CreateReceipt from './pages/CreateReceipt'
@@ -25,6 +25,8 @@ import './theme/variables.css';
 import './theme/tailwind.css';
 import { add, home, settings } from 'ionicons/icons';
 import SettingsPage from './pages/Settings';
+import RegisterPage from './pages/Register';
+import LoginPage from './pages/Login';
 
 setupIonicReact();
 
@@ -41,6 +43,12 @@ const App: React.FC = () => (
           </Route>
           <Route path="/settings" exact={true}>
             <SettingsPage />
+          </Route>
+          <Route path="/login" exact={true}>
+            <LoginPage />
+          </Route>
+          <Route path="/register" exact={true}>
+            <RegisterPage />
           </Route>
           <Route path="/new-receipt">
             <CreateReceipt />
