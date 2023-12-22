@@ -12,7 +12,7 @@ import {
 } from '@ionic/react';
 import './Home.css';
 import Receipt from '../domain/receipt';
-import { listReceipts } from '../data/receipts';
+import { listReceipts, listReceiptsFor } from '../data/receipts';
 import { options, search } from 'ionicons/icons';
 import { getCurrentUser, userSignOut } from '../app/auth';
 import { useHistory } from 'react-router';
@@ -23,7 +23,10 @@ const Home: React.FC = () => {
 
   useIonViewWillEnter(() => {
     const user = getCurrentUser()
-    if (!user) history.push("/register")
+    if (!user) {
+      history.push("/register")
+      return
+    }
 
     listReceipts().then(receipts => {
       setReceipts(receipts);
@@ -75,7 +78,9 @@ const Home: React.FC = () => {
         </div>
 
         <div>
-          {receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />)}
+          {
+            receipts.length > 0 ? receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />) : <div>No tiene recetas creadas</div>
+          }
         </div>
       </IonContent>
 

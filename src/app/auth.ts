@@ -1,4 +1,4 @@
-import { User, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { User, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import app from "./firebase";
 
 const auth = getAuth(app)
@@ -17,4 +17,13 @@ export const getCurrentUser = (): User | null => {
 
 export const userSignOut = () => {
     return auth.signOut()
+}
+
+export const updateUser = (displayName: string, imageURL: string) => {
+    const user = auth.currentUser
+    if (!user) return
+
+    return updateProfile(user, {
+        displayName: displayName, photoURL: imageURL
+    })
 }

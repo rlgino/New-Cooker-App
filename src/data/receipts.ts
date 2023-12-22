@@ -1,4 +1,4 @@
-import { getReceipt, getReceipts, setReceipt } from "../app/database";
+import { getReceipt, getReceiptFor, getReceipts, getReceiptsFor, setReceipt, setReceiptFor } from "../app/database";
 import Receipt from "../domain/receipt";
 
 export const listReceipts = async () => {
@@ -11,6 +11,12 @@ export const createReceipt = async (receipt: Receipt) => {
 
 export const findReceipt = async (id: String) => getReceipt(id);
 
-export const updateReceipt = async (receipt: Receipt) => {
-  await setReceipt(receipt)
+export const listReceiptsFor = async (uid: string) => {
+  return getReceiptsFor(uid)
+};
+
+export const createReceiptFor = async (uid: string, receipt: Receipt) => {
+  await setReceiptFor(uid, receipt)
 }
+
+export const findReceiptFor = async (uid: string, id: String) => getReceiptFor(uid, id);
