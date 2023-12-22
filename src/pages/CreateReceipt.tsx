@@ -15,13 +15,11 @@ import ReceiptForm from '../components/ReceiptForm';
 
 function CreateReceipt() {
   const [receipt, setReceipt] = useState<Receipt>();
-  const [title, setTitle] = useState<string>("New receipt")
+  const [title, setTitle] = useState<string>("Nueva receta")
   const params = useParams<{ id: string }>();
 
   useIonViewWillEnter(() => {
-    if (params.id) {
-      console.log("Finding receipt " + params.id);
-      
+    if (params.id) {      
       findReceipt(params.id).then(rec => {
         setReceipt(rec)
         setTitle(rec.id)
