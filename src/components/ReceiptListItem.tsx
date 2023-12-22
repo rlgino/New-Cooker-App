@@ -1,8 +1,3 @@
-import {
-  IonAvatar,
-  IonItem,
-  IonLabel,
-} from '@ionic/react';
 import './ReceiptListItem.css';
 import Receipt from '../domain/receipt';
 
@@ -12,16 +7,23 @@ interface ReceiptListItemProps {
 
 const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) => {
   return (
-    <IonItem routerLink={`/receipt/${receipt.id}`} detail={false}>
-      <div slot="start" className="dot dot-unread"></div>
-      <IonLabel className="ion-text-wrap">
-        <h2>{receipt.name}</h2>
-        <IonAvatar aria-hidden="true" slot="start">
-          <img alt="" src={receipt.image.toString()} />
-        </IonAvatar>
-        <h3>{receipt.description}</h3>
-      </IonLabel>
-    </IonItem>
+    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 card">
+      <a href={`/new-receipt/${receipt.id}`}>
+        <img className="rounded-t-lg" src={receipt.image.toString()} alt="" />
+      </a>
+      <div className="p-5">
+        <a href={`/new-receipt/${receipt.id}`}>
+          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{receipt.name}</h5>
+        </a>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{receipt.description}</p>
+        <a href={`/new-receipt/${receipt.id}`} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Ver detalles
+          <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+          </svg>
+        </a>
+      </div>
+    </div>
   );
 };
 

@@ -4,8 +4,6 @@ import {
   IonAvatar,
   IonContent,
   IonIcon,
-  IonItem,
-  IonList,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -15,7 +13,7 @@ import {
 import './Home.css';
 import Receipt from '../domain/receipt';
 import { listReceipts } from '../data/receipts';
-import { add, search, settings } from 'ionicons/icons';
+import { options, search } from 'ionicons/icons';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
@@ -51,25 +49,20 @@ const Home: React.FC = () => {
         </IonRefresher>
 
         <div className='filters'>
-          <form id="form" role="search">
+          <form id="form" role="search" className='filters-form'>
             <input type="search" id="query" name="q"
-              placeholder="Search..."
+              placeholder="Search..." className='filters-input'
               aria-label="Search through site content" />
             <IonIcon icon={search} size='large' className='searchIcon'></IonIcon>
           </form>
-          <IonIcon icon={settings} size='large' className='more-filters'></IonIcon>
+          <IonIcon icon={options} size='large' className='more-filters'></IonIcon>
         </div>
 
-        <IonList className='receipt-grid'>
+        <div>
           {receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />)}
-        </IonList>
+        </div>
       </IonContent>
 
-      <div className="actions">
-        <IonItem routerLink={`/new-receipt`} detail={false}>
-          <IonIcon icon={add} size='large' className='add'/>
-        </IonItem>
-      </div>
     </IonPage>
   );
 };

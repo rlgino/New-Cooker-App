@@ -4,12 +4,6 @@
     justify-content: space-between;
 }
 
-.receipt-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: .5rem;
-}
-
 .avatar {
     padding: .5em;
 }
@@ -35,7 +29,7 @@
     color: #292526;
 }
 
-form {
+.filters-form {
     width: 300px;
     height: 44px;
     border-radius: 15px;
@@ -46,7 +40,7 @@ form {
     align-items: center;
 }
 
-input {
+.filters-input {
     all: unset;
     font: 16px system-ui;
     color: #fff;

@@ -1,23 +1,16 @@
 import {
-    IonButton,
-    IonInput,
-    IonItem,
-    IonLabel,
-    IonList,
+    useIonViewDidLeave,
     useIonViewWillEnter,
 } from '@ionic/react';
-import './ReceiptListItem.css';
+import './ReceiptForm.css';
 import Receipt from '../domain/receipt';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { createReceipt } from '../data/receipts';
-import { useHistory } from 'react-router';
+import { createReceipt, findReceipt } from '../data/receipts';
+import { useHistory, useParams } from 'react-router';
+import { uploadImage } from '../app/storage';
 
-interface ReceiptListItemProps {
-    receipt: Receipt | undefined;
-}
-
-const ReceiptForm: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) => {
+const ReceiptForm = () => {
     const [receiptToSave, setReceiptToSave] = useState<Receipt>({
         id: uuidv4(),
         name: "",
@@ -26,11 +19,26 @@ const ReceiptForm: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) => {
     })
     const [img, setImg] = useState(null)
     const history = useHistory();
+    const params = useParams<{ id: string }>();
 
     useIonViewWillEnter(() => {
-        console.log("Finding receipt? "+ receipt)
-        if (receipt) setReceiptToSave(receipt)
+        if (params.id) {
+            findReceipt(params.id).then(rec => {
+                setReceiptToSave(rec)
+            });
+        }
     }, [])
+
+    useIonViewDidLeave(() => {
+        setImg(null)
+        setReceiptToSave({
+            id: uuidv4(),
+            name: "",
+            description: "",
+            image: "",
+        })
+        params.id = ""
+    })
 
     const onFileChange = (fileChangeEvent: any) => {
         setImg(fileChangeEvent.target.files[0]);
@@ -40,43 +48,104 @@ const ReceiptForm: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) => {
         setReceiptToSave({ ...receiptToSave, [e.target.name]: e.target.value })
     };
 
-    const sendReceipt = (e: any) => {
+    const sendReceipt = async (e: any) => {
         e.preventDefault()
-        if (!img) {
+        if (!img && !receiptToSave.image) {
             console.log("Not file")
             return
         }
+        console.log(receiptToSave.image)
+        var url = receiptToSave.image
+        if (img) {
+            console.log("Loading image")
+            url = await uploadImage(img, `${receiptToSave.id}.jpg`)
+        }
+        receiptToSave.image = url
 
-        createReceipt(receiptToSave, img)
+        createReceipt(receiptToSave)
             .then(() => history.push("/home"))
             .catch(ex => console.error(ex))
     }
 
     return (
-        <form onSubmit={sendReceipt}>
-            <IonList>
-                <IonItem>
-                    <IonLabel>{receiptToSave.id.toString()}</IonLabel>
-                </IonItem>
-                <IonItem>
-                    <IonInput label="Name" name="name" placeholder='Insert name of the food' value={receiptToSave.name.toString()} onIonChange={onChange}></IonInput>
-                </IonItem>
+        <form className="max-w-md mx-auto receipt-form relative items-center block max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-800 dark:hover:bg-gray-700" onSubmit={sendReceipt}>
+            <div className="relative z-0 w-full mb-5 group">
+                <input type="text" name="name" id="receipt_name"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    value={receiptToSave.name.toString()} onChange={onChange}
+                    placeholder=" " required />
+                <label htmlFor="name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    Nombre
+                </label>
+            </div>
+            <div className="relative z-0 w-full mb-5 group">
+                <input type="text" name="description" id="receipt_description"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    value={receiptToSave.description.toString()} onChange={onChange}
+                    placeholder=" " required />
+                <label htmlFor="description" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    Descripcion
+                </label>
+            </div>
 
-                <IonItem>
-                    <IonInput label="Description" name="description" placeholder="Any data about your food?" value={receiptToSave.description.toString()} onIonChange={onChange}></IonInput>
-                </IonItem>
+            <div className="max-w-lg mx-auto">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="user_avatar">{img || receiptToSave.image !== "" ? receiptToSave.id.toString() : "Cargue una imagen"}</label>
+                <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    onChange={(ev) => onFileChange(ev)}
+                    aria-describedby="user_avatar_help" id="user_avatar" type="file" required={receiptToSave.image === ""} />
+            </div>
 
-                <IonItem>
-                    <IonItem>
-                        <input type="file" onChange={(ev) => onFileChange(ev)}></input>
-                    </IonItem>
-                    <IonLabel>{img ? receiptToSave.id.toString() : "Not image"}</IonLabel>
-                </IonItem>
+            <br />
 
-                <IonButton color="primary" expand="full" type='submit'>
-                    Create
-                </IonButton>
-            </IonList>
+            <div className="relative overflow-x-auto">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">
+                                Elemento
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Cantidad
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Medida
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr className="bg-white dark:bg-gray-800">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <input type="text" name="nameProduct"
+                                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                    placeholder=" " required />
+                                <label htmlFor="nameProduct" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Nombre
+                                </label>
+                            </th>
+                            <td className="px-6 py-4">
+                                <input type="number" name="amountProduct"
+                                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                    placeholder=" " required />
+                                <label htmlFor="amountProduct" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Nombre
+                                </label>
+                            </td>
+                            <td className="px-6 py-4">
+                                <select id="amount" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option>Gr - Gramos</option>
+                                    <option>KG - Kilos</option>
+                                    <option>Un - Unidades</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Agregar</button>
+
+            <br />
+            <br />
+            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{params.id ? "Actualizar" : "Crear"}</button>
         </form>
     );
 };

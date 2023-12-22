@@ -1,8 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
-import ViewReceipt from './pages/ViewReceipt';
 import CreateReceipt from './pages/CreateReceipt'
 
 /* Core CSS required for Ionic components to work properly */
@@ -23,31 +22,53 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import './theme/tailwind.css';
+import { add, home, settings } from 'ionicons/icons';
+import SettingsPage from './pages/Settings';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/" exact={true}>
-          <Redirect to="/home" />
-        </Route>
-        <Route path="/home" exact={true}>
-          <Home />
-        </Route>
-        <Route path="/receipt/:id">
-           <ViewReceipt />
-        </Route>
-        <Route path="/new-receipt">
-          <CreateReceipt />
-        </Route>
-        <Route path="/new-receipt/:id">
-          <CreateReceipt />
-        </Route>
-      </IonRouterOutlet>
+      <IonTabs>
+        <IonRouterOutlet>
+          <Route path="/" exact={true}>
+            <Redirect to="/home" />
+          </Route>
+          <Route path="/home" exact={true}>
+            <Home />
+          </Route>
+          <Route path="/settings" exact={true}>
+            <SettingsPage />
+          </Route>
+          <Route path="/new-receipt">
+            <CreateReceipt />
+          </Route>
+          <Route path="/new-receipt/:id">
+            <CreateReceipt />
+          </Route>
+        </IonRouterOutlet>
+
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="home" href="/home">
+            <IonIcon icon={home} />
+            <IonLabel>Mis recetas</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="new" href="/new-receipt">
+            <IonIcon icon={add} />
+            <IonLabel>Crear</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="settings" href="/settings">
+            <IonIcon icon={settings} />
+            <IonLabel>Configuraciones</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
     </IonReactRouter>
-  </IonApp>
+  </IonApp >
 );
 
 export default App;

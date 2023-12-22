@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   IonBackButton,
   IonButtons,
@@ -6,39 +5,23 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
-  useIonViewWillEnter,
 } from '@ionic/react';
-import { useParams } from 'react-router';
-import Receipt from '../domain/receipt';
-import { findReceipt } from '../data/receipts';
 import ReceiptForm from '../components/ReceiptForm';
 
 function CreateReceipt() {
-  const [receipt, setReceipt] = useState<Receipt>();
-  const [title, setTitle] = useState<string>("Nueva receta")
-  const params = useParams<{ id: string }>();
-
-  useIonViewWillEnter(() => {
-    if (params.id) {      
-      findReceipt(params.id).then(rec => {
-        setReceipt(rec)
-        setTitle(rec.id)
-      });
-    }
-  });
 
   return (
-    <IonPage id="view-message-page">
+    <IonPage>
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton text={title} defaultHref="/home"></IonBackButton>
+            <IonBackButton text="Editando o creando receta" defaultHref="/home"></IonBackButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
-        <ReceiptForm receipt={receipt} />
+      <IonContent>
+        <ReceiptForm />
       </IonContent>
     </IonPage>
   );
