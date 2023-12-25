@@ -23,11 +23,12 @@ export const userSignOut = () => {
     return auth.signOut()
 }
 
-export const updateUser = (displayName: string, imageURL: string) => {
-    const user = getCurrentUser()
+export const updateUser = async (displayName: string, imageURL: string) => {
+    const user = auth.currentUser
     if (!user) return
 
-    return updateProfile(user, {
+    await updateProfile(auth.currentUser, {
         displayName: displayName, photoURL: imageURL
     })
+    localStorage.setItem('user', JSON.stringify(auth.currentUser))
 }

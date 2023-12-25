@@ -20,6 +20,8 @@ import { useHistory } from 'react-router';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
+  const [imgUrl, setImgUrl] = useState("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Boca_Juniors_logo18.svg/1200px-Boca_Juniors_logo18.svg.png")
+  const [user, setUser] = useState("")
   const history = useHistory();
 
   useIonViewWillEnter(() => {
@@ -30,7 +32,12 @@ const Home: React.FC = () => {
 
   useIonViewDidEnter(() => {
     const user = getCurrentUser()
-    if (!user) history.push("/register")
+    if (!user) {
+      history.push("/register")
+      return
+    }
+    setUser(user.displayName ? user.displayName : "")
+    setImgUrl(user.photoURL ? user.photoURL : imgUrl)
   }, [])
 
   const refresh = (e: CustomEvent) => {
@@ -55,10 +62,10 @@ const Home: React.FC = () => {
         <div className='header'>
           <div className='welcome'>
             <div>Welcome 👋</div>
-            <h3 className='title'>Gino Luraschi</h3>
+            <h3 className='title'>{user}</h3>
           </div>
           <IonAvatar aria-hidden="true" slot="start" className='avatar' onClick={() => signOut()}>
-            <img alt="" src="/favicon.png" />
+            <img alt="" src={imgUrl} />
           </IonAvatar>
         </div>
       </IonToolbar>
