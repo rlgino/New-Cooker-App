@@ -5,10 +5,19 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
+  useIonViewDidEnter,
 } from '@ionic/react';
 import ReceiptForm from '../components/ReceiptForm';
+import { getCurrentUser } from '../app/auth';
+import { useHistory } from 'react-router';
 
 function CreateReceipt() {
+  const history = useHistory();
+
+  useIonViewDidEnter(() => {
+    const user = getCurrentUser()
+    if (!user) history.push("/register")
+  }, [])
 
   return (
     <IonPage>

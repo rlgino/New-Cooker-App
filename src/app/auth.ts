@@ -7,20 +7,24 @@ export const createUserWithEmailAndPass = (user: string, pass: string) => {
     return createUserWithEmailAndPassword(auth, user, pass)
 }
 
-export const signIn = (user: string, pass: string) => {
-    return signInWithEmailAndPassword(auth, user, pass)
+export const signIn = async (user: string, pass: string) => {
+    const credentials = await signInWithEmailAndPassword(auth, user, pass)
+    localStorage.setItem('user', JSON.stringify(credentials.user))
 }
 
 export const getCurrentUser = (): User | null => {
-    return auth.currentUser
+    const user = localStorage.getItem('user')
+    if (!user) return null
+    return JSON.parse(user) as User
 }
 
 export const userSignOut = () => {
+    localStorage.clear()
     return auth.signOut()
 }
 
 export const updateUser = (displayName: string, imageURL: string) => {
-    const user = auth.currentUser
+    const user = getCurrentUser()
     if (!user) return
 
     return updateProfile(user, {

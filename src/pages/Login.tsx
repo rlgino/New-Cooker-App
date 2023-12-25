@@ -25,6 +25,9 @@ const LoginPage: React.FC = () => {
         e.preventDefault()
         signIn(user.userName, user.password).then(() => {
             history.push("/home")
+        }).catch((err) => {
+            console.log(err)
+            alert("Error al loguearse")
         })
     }
 

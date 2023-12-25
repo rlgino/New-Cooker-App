@@ -38,6 +38,8 @@ const ReceiptForm = () => {
             image: "",
         })
         params.id = ""
+        console.log("Leaving")
+        console.log( params.id)
     })
 
     const onFileChange = (fileChangeEvent: any) => {

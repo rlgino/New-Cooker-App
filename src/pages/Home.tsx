@@ -8,11 +8,12 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonToolbar,
+  useIonViewDidEnter,
   useIonViewWillEnter
 } from '@ionic/react';
 import './Home.css';
 import Receipt from '../domain/receipt';
-import { listReceipts, listReceiptsFor } from '../data/receipts';
+import { listReceipts } from '../data/receipts';
 import { options, search } from 'ionicons/icons';
 import { getCurrentUser, userSignOut } from '../app/auth';
 import { useHistory } from 'react-router';
@@ -22,16 +23,15 @@ const Home: React.FC = () => {
   const history = useHistory();
 
   useIonViewWillEnter(() => {
-    const user = getCurrentUser()
-    if (!user) {
-      history.push("/register")
-      return
-    }
-
     listReceipts().then(receipts => {
       setReceipts(receipts);
     });
   });
+
+  useIonViewDidEnter(() => {
+    const user = getCurrentUser()
+    if (!user) history.push("/register")
+  }, [])
 
   const refresh = (e: CustomEvent) => {
     setTimeout(() => {
