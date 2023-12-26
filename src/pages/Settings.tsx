@@ -5,7 +5,9 @@ import { useHistory } from "react-router"
 import { uploadProfileImage } from "../app/storage"
 
 const SettingsPage: React.FC = () => {
+    const [uid, setUid] = useState("")
     const [userName, setUserName] = useState("")
+    const [saving, setSaving] = useState(false)
     const [imgUrl, setImgUrl] = useState("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Boca_Juniors_logo18.svg/1200px-Boca_Juniors_logo18.svg.png")
     const history = useHistory()
 
@@ -16,6 +18,7 @@ const SettingsPage: React.FC = () => {
             return
         }
 
+        setUid(user.uid)
         setUserName(user.displayName ? user.displayName : "")
         setImgUrl(user.photoURL ? user.photoURL : imgUrl)
     }, [])
@@ -25,17 +28,19 @@ const SettingsPage: React.FC = () => {
     }
 
     const onFileChange = (fileChangeEvent: any) => {
-        uploadProfileImage(fileChangeEvent.target.files[0], userName).then((url) => {
+        setSaving(true)
+        uploadProfileImage(fileChangeEvent.target.files[0], uid).then((url) => {
             setImgUrl(url)
         }).catch((err) => {
             console.log(err)
             alert("Error cargando imagen")
-        })
+        }).finally(() => setSaving(false))
     };
 
-    const update = async (e:any) => {
+    const update = async (e: any) => {
         e.preventDefault()
-        updateUser(userName, imgUrl)
+        setSaving(true)
+        updateUser(userName, imgUrl).then(() => setSaving(false))
     }
 
     return <IonPage>
@@ -64,7 +69,11 @@ const SettingsPage: React.FC = () => {
                     onChange={(ev) => onFileChange(ev)}
                     aria-describedby="user_avatar_help" id="user_avatar" type="file" />
 
-                <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                <button type="submit"
+                    disabled={saving}
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    {saving ? "Guardando" : "Guardar"}
+                </button>
             </form>
         </IonContent>
     </IonPage >

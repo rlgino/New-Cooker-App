@@ -13,22 +13,16 @@ import {
 } from '@ionic/react';
 import './Home.css';
 import Receipt from '../domain/receipt';
-import { listReceipts } from '../data/receipts';
 import { options, search } from 'ionicons/icons';
 import { getCurrentUser, userSignOut } from '../app/auth';
 import { useHistory } from 'react-router';
+import { listReceiptsFor } from '../data/receipts';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [imgUrl, setImgUrl] = useState("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Boca_Juniors_logo18.svg/1200px-Boca_Juniors_logo18.svg.png")
   const [user, setUser] = useState("")
   const history = useHistory();
-
-  useIonViewWillEnter(() => {
-    listReceipts().then(receipts => {
-      setReceipts(receipts);
-    });
-  });
 
   useIonViewDidEnter(() => {
     const user = getCurrentUser()
@@ -38,6 +32,10 @@ const Home: React.FC = () => {
     }
     setUser(user.displayName ? user.displayName : "")
     setImgUrl(user.photoURL ? user.photoURL : imgUrl)
+
+    listReceiptsFor(user.uid).then(receipts => {
+      setReceipts(receipts);
+    });
   }, [])
 
   const refresh = (e: CustomEvent) => {

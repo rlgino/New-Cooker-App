@@ -6,9 +6,10 @@ import './ReceiptForm.css';
 import Receipt from '../domain/receipt';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { createReceipt, findReceipt } from '../data/receipts';
+import { createReceiptFor, findReceiptFor } from '../data/receipts';
 import { useHistory, useParams } from 'react-router';
 import { uploadImage } from '../app/storage';
+import { getCurrentUser } from '../app/auth';
 
 const ReceiptForm = () => {
     const [receiptToSave, setReceiptToSave] = useState<Receipt>({
@@ -18,12 +19,19 @@ const ReceiptForm = () => {
         image: "",
     })
     const [img, setImg] = useState(null)
+    const [uid, setUid] = useState("")
     const history = useHistory();
     const params = useParams<{ id: string }>();
 
     useIonViewWillEnter(() => {
+        const user = getCurrentUser()
+        if (!user) {
+            history.push("/register")
+            return
+        }
+        setUid(user.uid)
         if (params.id) {
-            findReceipt(params.id).then(rec => {
+            findReceiptFor(user.uid, params.id).then(rec => {
                 setReceiptToSave(rec)
             });
         }
@@ -39,7 +47,7 @@ const ReceiptForm = () => {
         })
         params.id = ""
         console.log("Leaving")
-        console.log( params.id)
+        console.log(params.id)
     })
 
     const onFileChange = (fileChangeEvent: any) => {
@@ -64,7 +72,7 @@ const ReceiptForm = () => {
         }
         receiptToSave.image = url
 
-        createReceipt(receiptToSave)
+        createReceiptFor(uid, receiptToSave)
             .then(() => history.push("/home"))
             .catch(ex => console.error(ex))
     }

@@ -1,15 +1,5 @@
-import { getReceipt, getReceiptFor, getReceipts, getReceiptsFor, setReceipt, setReceiptFor } from "../app/database";
+import { getReceiptFor, getReceiptsFor, setReceiptFor } from "../app/database";
 import Receipt from "../domain/receipt";
-
-export const listReceipts = async () => {
-  return getReceipts()
-};
-
-export const createReceipt = async (receipt: Receipt) => {
-  await setReceipt(receipt)
-}
-
-export const findReceipt = async (id: String) => getReceipt(id);
 
 export const listReceiptsFor = async (uid: string) => {
   return getReceiptsFor(uid)
