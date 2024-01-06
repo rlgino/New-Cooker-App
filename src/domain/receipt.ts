@@ -1,6 +1,13 @@
-export default interface Receipt {
+export interface Receipt {
     id: string
-    name: String
-    image: String
-    description: String
+    name: string
+    image: string
+    items: Item[]
+    steps: string[]
+}
+
+export interface Item {
+    name: string
+    quantity: number
+    measureUnity: string
 }

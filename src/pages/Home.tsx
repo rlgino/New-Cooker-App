@@ -8,11 +8,10 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonToolbar,
-  useIonViewDidEnter,
-  useIonViewWillEnter
+  useIonViewDidEnter
 } from '@ionic/react';
 import './Home.css';
-import Receipt from '../domain/receipt';
+import { Receipt } from '../domain/receipt';
 import { options, search } from 'ionicons/icons';
 import { getCurrentUser, userSignOut } from '../app/auth';
 import { useHistory } from 'react-router';

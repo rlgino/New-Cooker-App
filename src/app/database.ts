@@ -1,15 +1,16 @@
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getDatabase, ref, set, onValue } from "firebase/database";
-import Receipt from "../domain/receipt";
+import { Receipt } from "../domain/receipt";
 import app from "./firebase";
 
 export const setReceiptFor = (uid: string, receipt: Receipt) => {
     const db = getDatabase(app);
     set(ref(db, `receipts/${uid}/${receipt.id}`), {
         name: receipt.name,
-        description: receipt.description,
-        image: receipt.image
+        image: receipt.image,
+        steps: receipt.steps,
+        items: receipt.items
     });
 }
 
@@ -29,8 +30,9 @@ export const getReceiptsFor = async (uid: string): Promise<Receipt[]> => {
                 const receipt: Receipt = {
                     id: childKey,
                     name: childData.name,
-                    description: childData.description,
-                    image: childData.image
+                    image: childData.image,
+                    items: childData.items ? childData.items : [],
+                    steps: childData.steps ? childData.steps : []
                 }
                 res.push(receipt)
             });
@@ -52,8 +54,9 @@ export const getReceiptFor = async (uid: string, id: String): Promise<Receipt> =
             const rec: Receipt = {
                 id: snapshot.key ? snapshot.key : "",
                 name: data.name,
-                description: data.description,
-                image: data.image
+                image: data.image,
+                items: data.items ? data.items : [],
+                steps: data.steps ? data.steps : []
             };
             resolve(rec)
         });
