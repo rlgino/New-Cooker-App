@@ -20,9 +20,8 @@ const ItemsTable: FunctionComponent<ItemsTableProps> = ({ items, setItems }) => 
         const newItems = items.map((item, index) => {
             if (index === i)
                 return {
-                    name: value,
-                    quantity: item.quantity,
-                    measureUnity: item.measureUnity
+                    ...item,
+                    name: value
                 }
             return item
         })
@@ -34,9 +33,8 @@ const ItemsTable: FunctionComponent<ItemsTableProps> = ({ items, setItems }) => 
         const newItems = items.map((item, index) => {
             if (index === i)
                 return {
-                    name: item.name,
+                    ...item,
                     quantity: parseInt(value),
-                    measureUnity: item.measureUnity
                 }
             return item
         })
@@ -47,8 +45,7 @@ const ItemsTable: FunctionComponent<ItemsTableProps> = ({ items, setItems }) => 
         const newItems = items.map((item, index) => {
             if (index === i)
                 return {
-                    name: item.name,
-                    quantity: item.quantity,
+                    ...item,
                     measureUnity: value
                 }
             return item

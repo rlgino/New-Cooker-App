@@ -3,7 +3,7 @@ import {
     useIonViewWillEnter,
 } from '@ionic/react';
 import './ReceiptForm.css';
-import { Receipt } from '../domain/receipt';
+import { Item, Receipt } from '../domain/receipt';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { createReceiptFor, findReceiptFor } from '../data/receipts';
@@ -22,7 +22,7 @@ const ReceiptForm = () => {
         steps: []
     })
     const [steps, setSteps] = useState<string[]>([])
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState<Item[]>([])
     const [img, setImg] = useState(null)
     const [uid, setUid] = useState("")
     const history = useHistory();
@@ -38,6 +38,8 @@ const ReceiptForm = () => {
         if (params.id) {
             findReceiptFor(user.uid, params.id).then(rec => {
                 setReceiptToSave(rec)
+                setItems(rec.items)
+                setSteps(rec.steps)
             });
         }
     }, [])
@@ -51,6 +53,8 @@ const ReceiptForm = () => {
             items: [],
             steps: []
         })
+        setItems([])
+        setSteps([])
         params.id = ""
         console.log("Leaving")
         console.log(params.id)
