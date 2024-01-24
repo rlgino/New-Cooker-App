@@ -1,3 +1,8 @@
-.receipt-form{
+.receipt-form {
     padding: 2rem;
+}
+
+ion-thumbnail {
+    --size: 140px;
+    --border-radius: 14px;
 }

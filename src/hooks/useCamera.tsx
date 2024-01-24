@@ -7,16 +7,14 @@ export function usePhotoGallery() {
       quality: 100,
       resultType: CameraResultType.Uri,
     });
-    return new Promise((resolve) => {
-      base64FromPath(photo.webPath!).then(res => resolve(res))
-    })
+    return base64FromPath(photo.webPath!)
   };
 
   async function base64FromPath(path: string): Promise<Blob> {
     const response = await fetch(path);
     const blob = await response.blob();
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve(blob)
     });
   }

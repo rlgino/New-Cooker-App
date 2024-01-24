@@ -5,6 +5,7 @@ import {
     IonHeader,
     IonIcon,
     IonModal,
+    IonThumbnail,
     IonTitle,
     IonToolbar,
     useIonViewDidLeave,
@@ -33,7 +34,7 @@ const ReceiptForm = () => {
     })
     const [steps, setSteps] = useState<string[]>([])
     const [items, setItems] = useState<Item[]>([])
-    const [img, setImg] = useState(null)
+    const [img, setImg] = useState<Blob | null>(null)
     const [uid, setUid] = useState("")
     const history = useHistory();
     const params = useParams<{ id: string }>();
@@ -72,14 +73,27 @@ const ReceiptForm = () => {
         console.log(params.id)
     })
 
+    const changeImage = () => {
+        document.getElementById('receipt_picture')?.click()
+    }
+
     const onFileChange = (fileChangeEvent: any) => {
         setImg(fileChangeEvent.target.files[0]);
+        let reader = new FileReader();
+        reader.onload = (event: any) => {
+            setReceiptToSave({ ...receiptToSave, image: event.target.result })
+        }
+        reader.readAsDataURL(fileChangeEvent.target.files[0]);
     };
 
     const takePicture = () => {
         takePhoto().then(photo => {
             setImg(photo)
-            setIsOpen(false)
+            let reader = new FileReader();
+            reader.onload = (event: any) => {
+                setReceiptToSave({ ...receiptToSave, image: event.target.result })
+            }
+            reader.readAsDataURL(photo);
         }).catch(e => {
             console.error(e)
         })
@@ -88,6 +102,10 @@ const ReceiptForm = () => {
     const setDefaultImage = () => {
         setReceiptToSave({ ...receiptToSave, image: "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg" })
         setIsOpen(false)
+    }
+
+    const getPreview = (): string => {
+        return receiptToSave.image ? receiptToSave.image : "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
     }
 
     const onChange = (e: any): void => {
@@ -138,10 +156,10 @@ const ReceiptForm = () => {
                 </IonHeader>
                 <IonContent className="ion-padding">
                     <div className="max-w-lg mx-auto">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="user_avatar">{img || receiptToSave.image !== "" ? receiptToSave.id.toString() : "Cargue una imagen"}</label>
-                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            onChange={(ev) => onFileChange(ev)}
-                            aria-describedby="user_avatar_help" id="user_avatar" type="file" required={receiptToSave.image === ""} />
+                        <IonButton expand="block" onClick={() => changeImage()}>
+                            Elegir una foto existente
+                        </IonButton>
+                        <input onChange={(ev) => onFileChange(ev)} id="receipt_picture" type="file" required={receiptToSave.image === ""} hidden />
                     </div>
                     o sino...
                     <IonButton expand="block" onClick={() => takePicture()}>
@@ -152,6 +170,10 @@ const ReceiptForm = () => {
                     <IonButton expand="block" onClick={() => setDefaultImage()}>
                         Sino elegila cuando termines
                     </IonButton>
+                    <br />
+                    <IonThumbnail>
+                        <img alt="Silhouette of mountains" src={getPreview()} />
+                    </IonThumbnail>
                 </IonContent>
             </IonModal>
 
