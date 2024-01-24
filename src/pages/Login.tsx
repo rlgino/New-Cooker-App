@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonToolbar, useIonViewDidEnter } from "@ionic/react"
+import { IonContent, IonHeader, IonPage, IonToolbar, useIonLoading, useIonViewDidEnter } from "@ionic/react"
 import './Register.css'
 import { useState } from "react"
 import { getCurrentUser, signIn } from "../app/auth"
@@ -10,6 +10,13 @@ const LoginPage: React.FC = () => {
         password: "",
     })
     const history = useHistory();
+    /**
+     * This example does not make use of the dismiss
+     * method returned from `useIonLoading`, but it can
+     * be used for more complex scenarios.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [present, dismiss] = useIonLoading();
 
     useIonViewDidEnter(() => {
         const user = getCurrentUser()
@@ -22,13 +29,17 @@ const LoginPage: React.FC = () => {
     };
 
     const createUser = (e: any) => {
+        present({
+            message: 'Ingresando...',
+        });
+
         e.preventDefault()
         signIn(user.userName, user.password).then(() => {
             history.push("/home")
         }).catch((err) => {
             console.log(err)
             alert("Error al loguearse")
-        })
+        }).finally(() => dismiss())
     }
 
     return <IonPage>
