@@ -1,10 +1,32 @@
-import { User, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { PhoneAuthProvider, RecaptchaVerifier, User, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updatePhoneNumber, updateProfile } from "firebase/auth";
 import app from "./firebase";
 
 const auth = getAuth(app)
 
 export const createUserWithEmailAndPass = (user: string, pass: string) => {
     return createUserWithEmailAndPassword(auth, user, pass)
+}
+
+let verifier: RecaptchaVerifier
+let verificationID: string
+
+export const renderRecaptcha = (componentName: string, callback: any) => {
+    if (verifier) return
+    verifier = new RecaptchaVerifier(auth, componentName, {
+        size: 'invisible',
+        callback: callback,
+    });
+    verifier.render();
+}
+
+export const registerPhoneNumber = async (phoneNumber: string) => {
+    const provider = new PhoneAuthProvider(auth);
+    verificationID = await provider.verifyPhoneNumber(phoneNumber, verifier)
+}
+
+export const validateOtp = (otp: string) => {
+    const user = auth.currentUser
+    return updatePhoneNumber(user!, PhoneAuthProvider.credential(verificationID, otp));
 }
 
 export const signIn = async (user: string, pass: string) => {
