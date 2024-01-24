@@ -1,4 +1,12 @@
 import {
+    IonButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonModal,
+    IonTitle,
+    IonToolbar,
     useIonViewDidLeave,
     useIonViewWillEnter,
 } from '@ionic/react';
@@ -12,6 +20,8 @@ import { uploadImage } from '../app/storage';
 import { getCurrentUser } from '../app/auth';
 import StepsTable from './receiptform/stepstable';
 import ItemsTable from './receiptform/itemstable';
+import { camera } from 'ionicons/icons';
+import { usePhotoGallery } from '../hooks/useCamera';
 
 const ReceiptForm = () => {
     const [receiptToSave, setReceiptToSave] = useState<Receipt>({
@@ -27,6 +37,8 @@ const ReceiptForm = () => {
     const [uid, setUid] = useState("")
     const history = useHistory();
     const params = useParams<{ id: string }>();
+    const [isOpen, setIsOpen] = useState(false);
+    const { takePhoto } = usePhotoGallery()
 
     useIonViewWillEnter(() => {
         const user = getCurrentUser()
@@ -64,6 +76,20 @@ const ReceiptForm = () => {
         setImg(fileChangeEvent.target.files[0]);
     };
 
+    const takePicture = () => {
+        takePhoto().then(photo => {
+            setImg(photo)
+            setIsOpen(false)
+        }).catch(e => {
+            console.error(e)
+        })
+    }
+
+    const setDefaultImage = () => {
+        setReceiptToSave({ ...receiptToSave, image: "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg" })
+        setIsOpen(false)
+    }
+
     const onChange = (e: any): void => {
         setReceiptToSave({ ...receiptToSave, [e.target.name]: e.target.value })
     };
@@ -100,12 +126,34 @@ const ReceiptForm = () => {
                 </label>
             </div>
 
-            <div className="max-w-lg mx-auto">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="user_avatar">{img || receiptToSave.image !== "" ? receiptToSave.id.toString() : "Cargue una imagen"}</label>
-                <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    onChange={(ev) => onFileChange(ev)}
-                    aria-describedby="user_avatar_help" id="user_avatar" type="file" required={receiptToSave.image === ""} />
-            </div>
+            <button type="button" onClick={() => setIsOpen(true)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Elija una foto</button>
+            <IonModal isOpen={isOpen}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Elija una foto</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className="ion-padding">
+                    <div className="max-w-lg mx-auto">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="user_avatar">{img || receiptToSave.image !== "" ? receiptToSave.id.toString() : "Cargue una imagen"}</label>
+                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                            onChange={(ev) => onFileChange(ev)}
+                            aria-describedby="user_avatar_help" id="user_avatar" type="file" required={receiptToSave.image === ""} />
+                    </div>
+                    o sino...
+                    <IonButton expand="block" onClick={() => takePicture()}>
+                        <IonIcon slot="start" icon={camera}></IonIcon>
+                        Tome una foto
+                    </IonButton>
+                    <br />
+                    <IonButton expand="block" onClick={() => setDefaultImage()}>
+                        Sino elegila cuando termines
+                    </IonButton>
+                </IonContent>
+            </IonModal>
 
             <br />
             <ItemsTable items={items} setItems={setItems} />

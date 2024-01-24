@@ -1,22 +1,27 @@
-import { useState, useEffect } from 'react';
-import { isPlatform } from '@ionic/react';
-
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-import { Filesystem, Directory } from '@capacitor/filesystem';
-import { Preferences } from '@capacitor/preferences';
-import { Capacitor } from '@capacitor/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 export function usePhotoGallery() {
-    const takePhoto = async () => {
-      const photo = await Camera.getPhoto({
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Camera,
-        quality: 100,
-      });
-    };
-  
-    return {
-      takePhoto,
-    };
+  const takePhoto = async (): Promise<Blob> => {
+    const photo = await Camera.getPhoto({
+      source: CameraSource.Camera,
+      quality: 100,
+      resultType: CameraResultType.Uri,
+    });
+    return new Promise((resolve) => {
+      base64FromPath(photo.webPath!).then(res => resolve(res))
+    })
+  };
+
+  async function base64FromPath(path: string): Promise<Blob> {
+    const response = await fetch(path);
+    const blob = await response.blob();
+
+    return new Promise((resolve, reject) => {
+      resolve(blob)
+    });
   }
-  
+
+  return {
+    takePhoto,
+  };
+}
