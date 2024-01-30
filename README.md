@@ -3,6 +3,11 @@
 ## Overview
 This is a simple application for demostrating knowledge in Ionic and React. Here I'm using Firebase as storage.
 
+## Hexagonal architecture
+Hexagonal architecture, also known as Ports and Adapters architecture or the Onion architecture, is a design pattern that emphasizes the separation of concerns in software development. It helps in creating a modular and flexible structure for applications. In a hexagonal architecture, the core business logic is at the center, surrounded by layers representing different concerns. These layers include the application's input and output mechanisms, such as databases, user interfaces, and external services.
+
+When you mention using hexagonal architecture oriented to the frontend for organizing files in your application, it suggests that you have applied this architectural pattern specifically to the frontend part of your system.
+
 ## Screenshots
 
 TBD

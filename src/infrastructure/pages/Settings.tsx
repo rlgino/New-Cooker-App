@@ -1,8 +1,8 @@
 import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonModal, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react"
-import { getCurrentUser, registerPhoneNumber, renderRecaptcha, updateUser, validateOtp } from "../app/auth"
+import { getCurrentUser, registerPhoneNumber, renderRecaptcha, updateUser, validateOtp } from "../firebase/auth"
 import { useState } from "react"
 import { useHistory } from "react-router"
-import { uploadProfileImage } from "../app/storage"
+import { uploadProfileImage } from "../firebase/storage"
 
 const SettingsPage: React.FC = () => {
     const [uid, setUid] = useState("")

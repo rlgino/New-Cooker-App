@@ -1,7 +1,7 @@
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getDatabase, ref, set, onValue } from "firebase/database";
-import { Receipt } from "../domain/receipt";
+import { Receipt } from "../../core/domain/receipt";
 import app from "./firebase";
 
 export const setReceiptFor = (uid: string, receipt: Receipt) => {

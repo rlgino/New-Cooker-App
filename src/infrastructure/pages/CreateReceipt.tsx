@@ -8,7 +8,7 @@ import {
   useIonViewDidEnter,
 } from '@ionic/react';
 import ReceiptForm from '../components/ReceiptForm';
-import { getCurrentUser } from '../app/auth';
+import { getCurrentUser } from '../firebase/auth';
 import { useHistory } from 'react-router';
 
 function CreateReceipt() {

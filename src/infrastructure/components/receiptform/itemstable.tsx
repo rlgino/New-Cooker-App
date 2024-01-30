@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { Item } from "../../domain/receipt";
+import { Item } from "../../../core/domain/receipt";
 
 interface ItemsTableProps {
     items: Item[],

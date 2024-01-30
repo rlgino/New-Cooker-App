@@ -1,4 +1,4 @@
-import { getReceiptFor, getReceiptsFor, setReceiptFor } from "../app/database";
+import { getReceiptFor, getReceiptsFor, setReceiptFor } from "../../infrastructure/firebase/database";
 import { Receipt } from "../domain/receipt";
 
 export const listReceiptsFor = async (uid: string) => {
