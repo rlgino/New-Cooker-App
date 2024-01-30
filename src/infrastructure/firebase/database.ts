@@ -6,7 +6,7 @@ import app from "./firebase";
 
 export const setReceiptFor = (uid: string, receipt: Receipt) => {
     const db = getDatabase(app);
-    set(ref(db, `receipts/${uid}/${receipt.id}`), {
+    set(ref(db, `user/${uid}/receipts/${receipt.id}`), {
         name: receipt.name,
         image: receipt.image,
         steps: receipt.steps,
@@ -17,7 +17,7 @@ export const setReceiptFor = (uid: string, receipt: Receipt) => {
 export const getReceiptsFor = async (uid: string): Promise<Receipt[]> => {
     return new Promise((resolve) => {
         const db = getDatabase(app);
-        var receipts = ref(db, `receipts/${uid}`);
+        var receipts = ref(db, `user/${uid}/receipts`);
         onValue(receipts, (snapshot) => {
             if (!snapshot.exists()) {
                 resolve([])
@@ -44,7 +44,7 @@ export const getReceiptsFor = async (uid: string): Promise<Receipt[]> => {
 export const getReceiptFor = async (uid: string, id: String): Promise<Receipt> => {
     return new Promise((resolve, reject) => {
         const db = getDatabase(app);
-        var receipts = ref(db, `receipts/${uid}/${id}`);
+        var receipts = ref(db, `user/${uid}/receipts/${id}`);
         onValue(receipts, (snapshot) => {
             if (!snapshot.exists()) {
                 reject("Receipt not found")
@@ -61,4 +61,11 @@ export const getReceiptFor = async (uid: string, id: String): Promise<Receipt> =
             resolve(rec)
         });
     })
+}
+
+export const updateNumber = (uid: string, phoneNumber: string) => {
+    const db = getDatabase(app);
+    set(ref(db, `contacts/${phoneNumber}`), {
+        uid: uid
+    });
 }

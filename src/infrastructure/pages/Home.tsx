@@ -15,11 +15,12 @@ import { Receipt } from '../../core/domain/receipt';
 import { options, search } from 'ionicons/icons';
 import { getCurrentUser, userSignOut } from '../firebase/auth';
 import { useHistory } from 'react-router';
-import { listReceiptsFor } from '../../core/data/receipts';
+import { listReceiptsFor } from '../../core/services/receipts';
+import { defaultImage } from '../../core/domain/default';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
-  const [imgUrl, setImgUrl] = useState("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Boca_Juniors_logo18.svg/1200px-Boca_Juniors_logo18.svg.png")
+  const [imgUrl, setImgUrl] = useState(defaultImage)
   const [user, setUser] = useState("")
   const history = useHistory();
 

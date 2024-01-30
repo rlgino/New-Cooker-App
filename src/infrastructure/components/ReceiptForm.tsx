@@ -15,7 +15,7 @@ import './ReceiptForm.css';
 import { Item, Receipt } from '../../core/domain/receipt';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { createReceiptFor, findReceiptFor } from '../../core/data/receipts';
+import { createReceiptFor, findReceiptFor } from '../../core/services/receipts';
 import { useHistory, useParams } from 'react-router';
 import { uploadImage } from '../firebase/storage';
 import { getCurrentUser } from '../firebase/auth';

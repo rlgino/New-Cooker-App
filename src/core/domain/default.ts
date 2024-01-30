@@ -1,0 +1,1 @@
+export const defaultImage = "https://firebasestorage.googleapis.com/v0/b/recetario-2021.appspot.com/o/default.jpg?alt=media&token=8f127231-173b-4291-9e2e-5f83b5e038d1"

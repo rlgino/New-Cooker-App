@@ -3,13 +3,16 @@ import { getCurrentUser, registerPhoneNumber, renderRecaptcha, updateUser, valid
 import { useState } from "react"
 import { useHistory } from "react-router"
 import { uploadProfileImage } from "../firebase/storage"
+import { defaultImage } from "../../core/domain/default"
+import { updateNumber } from "../firebase/database"
 
 const SettingsPage: React.FC = () => {
     const [uid, setUid] = useState("")
     const [userName, setUserName] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
+    const [email, setEmail] = useState("")
     const [saving, setSaving] = useState(false)
-    const [imgUrl, setImgUrl] = useState("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Boca_Juniors_logo18.svg/1200px-Boca_Juniors_logo18.svg.png")
+    const [imgUrl, setImgUrl] = useState(defaultImage)
     const history = useHistory()
 
     const [otp, setOtp] = useState("")
@@ -26,6 +29,7 @@ const SettingsPage: React.FC = () => {
         renderRecaptcha('sign-in-button', () => { console.log("Validating OTP") })
         setUid(user.uid)
         setUserName(user.displayName ? user.displayName : "")
+        setEmail(user.email ? user.email : "")
         setPhoneNumber(user.phoneNumber ? user.phoneNumber : "")
         setImgUrl(user.photoURL ? user.photoURL : imgUrl)
         setPhoneValidated(user.phoneNumber && user.phoneNumber !== "" ? true : false)
@@ -46,9 +50,11 @@ const SettingsPage: React.FC = () => {
     };
 
     const openOtpModal = () => {
-        console.log(phoneNumber)
         registerPhoneNumber(phoneNumber ? phoneNumber : "").then(() => {
             setIsOpen(true)
+        }).catch(err => {
+            console.error(err)
+            alert("Hubo un error al validar su telefono")
         })
     }
 
@@ -71,6 +77,7 @@ const SettingsPage: React.FC = () => {
         validateOtp(otp).then(() => {
             setIsOpen(false)
             setPhoneValidated(true)
+            updateNumber(uid, phoneNumber)
         }).catch(e => {
             console.error(e)
             alert("Error al validar el usuario")
@@ -99,6 +106,15 @@ const SettingsPage: React.FC = () => {
                             value={userName} onChange={e => setUserName(e.target.value)}
                             placeholder=" " required />
                         <label htmlFor="floating_first_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre</label>
+                    </div>
+                </div>
+                <div className="grid md:grid-cols-2 md:gap-6">
+                    <div className="relative z-0 w-full mb-5 group">
+                        <input type="text" name="floating_email" id="floating_email" disabled={phoneValidated}
+                            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            value={email} onChange={e => setEmail(e.target.value)}
+                            placeholder=" " required />
+                        <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
                     </div>
                 </div>
                 <div className="grid md:grid-cols-2 md:gap-6">
