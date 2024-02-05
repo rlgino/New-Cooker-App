@@ -1,6 +1,6 @@
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import { Receipt } from "../../core/domain/receipt";
 import app from "./firebase";
 
@@ -63,8 +63,9 @@ export const getReceiptFor = async (uid: string, id: String): Promise<Receipt> =
     })
 }
 
-export const updateNumber = (uid: string, phoneNumber: string) => {
+export const updateNumber = (uid: string, phoneNumber: string, oldPhoneNumber: string) => {
     const db = getDatabase(app);
+    remove(ref(db, `contacts/${oldPhoneNumber}`))
     set(ref(db, `contacts/${phoneNumber}`), {
         uid: uid
     });

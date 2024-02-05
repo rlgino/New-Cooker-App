@@ -10,6 +10,7 @@ const SettingsPage: React.FC = () => {
     const [uid, setUid] = useState("")
     const [userName, setUserName] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
+    const [oldNumber, setOldNumber] = useState("")
     const [email, setEmail] = useState("")
     const [saving, setSaving] = useState(false)
     const [imgUrl, setImgUrl] = useState(defaultImage)
@@ -31,6 +32,7 @@ const SettingsPage: React.FC = () => {
         setUserName(user.displayName ? user.displayName : "")
         setEmail(user.email ? user.email : "")
         setPhoneNumber(user.phoneNumber ? user.phoneNumber : "")
+        setOldNumber(user.phoneNumber ? user.phoneNumber : "")
         setImgUrl(user.photoURL ? user.photoURL : imgUrl)
         setPhoneValidated(user.phoneNumber && user.phoneNumber !== "" ? true : false)
     }, [])
@@ -77,7 +79,7 @@ const SettingsPage: React.FC = () => {
         validateOtp(otp).then(() => {
             setIsOpen(false)
             setPhoneValidated(true)
-            updateNumber(uid, phoneNumber)
+            updateNumber(uid, phoneNumber, oldNumber)
         }).catch(e => {
             console.error(e)
             alert("Error al validar el usuario")
