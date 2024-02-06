@@ -17,6 +17,7 @@ import { getCurrentUser, userSignOut } from '../firebase/auth';
 import { useHistory } from 'react-router';
 import { listReceiptsFor } from '../services/receipts';
 import { defaultImage } from '../domain/default';
+import { addListeners, registerNotifications } from '../firebase/notifications';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
@@ -30,6 +31,12 @@ const Home: React.FC = () => {
       history.push("/register")
       return
     }
+
+    registerNotifications().then(() => {
+      addListeners()
+    })
+
+
     setUser(user.displayName ? user.displayName : "")
     setImgUrl(user.photoURL ? user.photoURL : imgUrl)
 
