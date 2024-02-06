@@ -3,7 +3,7 @@ import { getCurrentUser, registerPhoneNumber, renderRecaptcha, updateUser, valid
 import { useState } from "react"
 import { useHistory } from "react-router"
 import { uploadProfileImage } from "../firebase/storage"
-import { defaultImage } from "../../core/domain/default"
+import { defaultImage } from "../domain/default"
 import { updateNumber } from "../firebase/database"
 
 const SettingsPage: React.FC = () => {

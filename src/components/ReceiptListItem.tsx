@@ -1,5 +1,5 @@
 import './ReceiptListItem.css';
-import { Receipt } from '../../core/domain/receipt';
+import { Receipt } from '../domain/receipt';
 import { IonRouterLink } from '@ionic/react';
 import ShareReceiptDialog from './ShareReceipt';
 import { useState } from 'react';

@@ -12,10 +12,10 @@ import {
     useIonViewWillEnter,
 } from '@ionic/react';
 import './ReceiptForm.css';
-import { Item, Receipt } from '../../core/domain/receipt';
+import { Item, Receipt } from '../domain/receipt';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { createReceiptFor, findReceiptFor } from '../../core/services/receipts';
+import { createReceiptFor, findReceiptFor } from '../services/receipts';
 import { useHistory, useParams } from 'react-router';
 import { uploadImage } from '../firebase/storage';
 import { getCurrentUser } from '../firebase/auth';

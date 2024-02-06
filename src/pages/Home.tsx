@@ -11,12 +11,12 @@ import {
   useIonViewDidEnter
 } from '@ionic/react';
 import './Home.css';
-import { Receipt } from '../../core/domain/receipt';
+import { Receipt } from '../domain/receipt';
 import { options, search } from 'ionicons/icons';
 import { getCurrentUser, userSignOut } from '../firebase/auth';
 import { useHistory } from 'react-router';
-import { listReceiptsFor } from '../../core/services/receipts';
-import { defaultImage } from '../../core/domain/default';
+import { listReceiptsFor } from '../services/receipts';
+import { defaultImage } from '../domain/default';
 
 const Home: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
