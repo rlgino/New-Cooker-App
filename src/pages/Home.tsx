@@ -33,9 +33,9 @@ const Home: React.FC = () => {
     }
 
     registerNotifications().then(() => {
-      addListeners()
+      if(user.phoneNumber) addListeners(user.phoneNumber)
+      else console.log("No notification added")
     })
-
 
     setUser(user.displayName ? user.displayName : "")
     setImgUrl(user.photoURL ? user.photoURL : imgUrl)

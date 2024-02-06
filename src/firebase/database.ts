@@ -68,9 +68,12 @@ export const getReceiptFor = async (uid: string, id: String): Promise<Receipt> =
 export const updateNumber = (uid: string, phoneNumber: string, oldPhoneNumber: string) => {
     const db = getDatabase(app);
     remove(ref(db, `contacts/${oldPhoneNumber}`))
-    set(ref(db, `contacts/${phoneNumber}`), {
-        uid: uid
-    });
+    set(ref(db, `contacts/${phoneNumber}/uid`), uid);
+}
+
+export const updatePushToken = (phoneNumber: string, pushToken: string) => {
+    const db = getDatabase(app);
+    set(ref(db, `contacts/${phoneNumber}/pushToken`), pushToken);
 }
 
 export const findUid = async (phoneNumber: string): Promise<string> => {

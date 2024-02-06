@@ -1,8 +1,10 @@
 import { PushNotifications } from '@capacitor/push-notifications';
+import { updatePushToken } from './database';
 
-export const addListeners = async () => {
+export const addListeners = async (phoneNumber: string) => {
     await PushNotifications.addListener('registration', token => {
         console.info('Registration token: ', token.value);
+        updatePushToken(phoneNumber, token.value)
     });
 
     await PushNotifications.addListener('registrationError', err => {
