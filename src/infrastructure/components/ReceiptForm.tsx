@@ -27,6 +27,7 @@ import { usePhotoGallery } from '../hooks/useCamera';
 const ReceiptForm = () => {
     const [receiptToSave, setReceiptToSave] = useState<Receipt>({
         id: uuidv4(),
+        userID: "",
         name: "",
         image: "",
         items: [],
@@ -61,6 +62,7 @@ const ReceiptForm = () => {
         setImg(null)
         setReceiptToSave({
             id: uuidv4(),
+            userID: "",
             name: "",
             image: "",
             items: [],

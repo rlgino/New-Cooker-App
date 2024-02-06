@@ -12,6 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor-community/contacts": "^5.0.4",
     "@capacitor/android": "^5.6.0",
     "@capacitor/app": "5.0.6",
     "@capacitor/camera": "^5.0.8",
