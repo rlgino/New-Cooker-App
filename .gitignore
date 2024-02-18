@@ -30,3 +30,5 @@ yarn-error.log*
 
 # Firebase
 firebase.ts
+.gitsecret/keys/random_seed
+!*.secret
