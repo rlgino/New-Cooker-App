@@ -66,6 +66,9 @@ export default {
 import './theme/tailwind.css';
 ```
 
+### Add git secret for encrypt data
+I used [Git Secret](https://sobolevn.me/git-secret/installation) tool for encrypt credentials.
+
 ### Do you wish to contribute?
 TBD
 
@@ -77,7 +80,7 @@ TBD
 * Email: gino.luraschi@gmail.com
 
 ## Status
-Just initialized... 
+First version comming with upload pictures and update receipts.
 
 ## Coming...
 * Receipts creating and allow users to upload pictures...
