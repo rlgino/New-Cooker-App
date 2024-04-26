@@ -76,7 +76,7 @@ export const updatePushToken = (phoneNumber: string, pushToken: string) => {
     set(ref(db, `contacts/${phoneNumber}/pushToken`), pushToken);
 }
 
-export const findUid = async (phoneNumber: string): Promise<string> => {
+export const findUser = async (phoneNumber: string): Promise<Contact> => {
     return new Promise((resolve, reject) => {
         const db = getDatabase(app);
         var contact = ref(db, `contacts/${phoneNumber.split(' ').join('')}`);
@@ -86,7 +86,11 @@ export const findUid = async (phoneNumber: string): Promise<string> => {
                 return
             }
             const data = snapshot.val();
-            resolve(data.uid)
+            resolve({
+                uid:data.uid,
+                phoneNumber: phoneNumber,
+                pushToken: data.pushToken
+            })
         });
     })
 }

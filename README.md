@@ -3,10 +3,8 @@
 ## Overview
 This is a simple application for demostrating knowledge in Ionic and React. Here I'm using Firebase as storage.
 
-## Hexagonal architecture
-Hexagonal architecture, also known as Ports and Adapters architecture or the Onion architecture, is a design pattern that emphasizes the separation of concerns in software development. It helps in creating a modular and flexible structure for applications. In a hexagonal architecture, the core business logic is at the center, surrounded by layers representing different concerns. These layers include the application's input and output mechanisms, such as databases, user interfaces, and external services.
-
-When you mention using hexagonal architecture oriented to the frontend for organizing files in your application, it suggests that you have applied this architectural pattern specifically to the frontend part of your system.
+## Download
+You can download the app from this [link in Google Drive](https://drive.google.com/file/d/1dQ6xFWLtEf6_MkedooZrbK9j9fxqDUkO/view?usp=sharing).
 
 ## Screenshots
 
@@ -81,6 +79,9 @@ TBD
 
 ## Status
 First version comming with upload pictures and update receipts.
+Receipts creating and allow users to upload pictures.
+Share the receipt throughout phone numbers.
 
 ## Coming...
-* Receipts creating and allow users to upload pictures...
+* Improving UI
+* Add filters for receipts
