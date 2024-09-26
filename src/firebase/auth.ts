@@ -1,4 +1,4 @@
-import { PhoneAuthProvider, RecaptchaVerifier, User, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updatePhoneNumber, updateProfile } from "firebase/auth";
+import { PhoneAuthProvider, RecaptchaVerifier, User, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, updatePhoneNumber, updateProfile } from "firebase/auth";
 import app from "./firebase";
 
 const auth = getAuth(app)
@@ -53,4 +53,10 @@ export const updateUser = async (displayName: string, imageURL: string) => {
         displayName: displayName, photoURL: imageURL
     })
     localStorage.setItem('user', JSON.stringify(auth.currentUser))
+}
+
+export const subscribeToUserChange = (setUserLogged: any) => {
+    onAuthStateChanged(auth, (user)=> {
+        setUserLogged(user !== null)
+    })
 }

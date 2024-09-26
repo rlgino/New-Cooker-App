@@ -35,6 +35,10 @@ const LoginPage: React.FC = () => {
 
         e.preventDefault()
         signIn(user.userName, user.password).then(() => {
+            setUser({
+                userName: user.userName,
+                password: ''
+            })
             history.push("/home")
         }).catch((err) => {
             console.log(err)

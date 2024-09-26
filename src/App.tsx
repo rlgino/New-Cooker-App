@@ -28,56 +28,65 @@ import { add, home, settings } from 'ionicons/icons';
 import SettingsPage from './pages/Settings';
 import RegisterPage from './pages/Register';
 import LoginPage from './pages/Login';
+import { subscribeToUserChange } from './firebase/auth';
+import { useState } from 'react';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/" exact={true}>
-            <Redirect to="/home" />
-          </Route>
-          <Route path="/home" exact={true}>
-            <Home />
-          </Route>
-          <Route path="/settings" exact={true}>
-            <SettingsPage />
-          </Route>
-          <Route path="/login" exact={true}>
-            <LoginPage />
-          </Route>
-          <Route path="/register" exact={true}>
-            <RegisterPage />
-          </Route>
-          <Route path="/new-receipt">
-            <CreateReceipt />
-          </Route>
-          <Route path="/new-receipt/:id">
-            <CreateReceipt />
-          </Route>
-        </IonRouterOutlet>
-
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon icon={home} />
-            <IonLabel>Mis recetas</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="new" href="/new-receipt">
-            <IonIcon icon={add} />
-            <IonLabel>Crear</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="settings" href="/settings">
-            <IonIcon icon={settings} />
-            <IonLabel>Configuraciones</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp >
-);
+const App: React.FC = () => {
+  const [hideTabs, setHideTabs] = useState(false)
+  subscribeToUserChange((userLogged: boolean)=> {
+    setHideTabs(!userLogged)
+  })
+  
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route path="/" exact={true}>
+              <Redirect to="/home" />
+            </Route>
+            <Route path="/home" exact={true}>
+              <Home />
+            </Route>
+            <Route path="/settings" exact={true}>
+              <SettingsPage />
+            </Route>
+            <Route path="/login" exact={true}>
+              <LoginPage />
+            </Route>
+            <Route path="/register" exact={true}>
+              <RegisterPage />
+            </Route>
+            <Route path="/new-receipt">
+              <CreateReceipt />
+            </Route>
+            <Route path="/new-receipt/:id">
+              <CreateReceipt />
+            </Route>
+          </IonRouterOutlet>
+  
+          <IonTabBar slot="bottom" hidden={hideTabs}>
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={home} />
+              <IonLabel>Mis recetas</IonLabel>
+            </IonTabButton>
+  
+            <IonTabButton tab="new" href="/new-receipt">
+              <IonIcon icon={add} />
+              <IonLabel>Crear</IonLabel>
+            </IonTabButton>
+  
+            <IonTabButton tab="settings" href="/settings">
+              <IonIcon icon={settings} />
+              <IonLabel>Configuraciones</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp >
+  )
+};
 
 export default App;
