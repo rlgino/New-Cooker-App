@@ -4,10 +4,12 @@ import {
     IonContent,
     IonHeader,
     IonIcon,
+    IonLoading,
     IonModal,
     IonThumbnail,
     IonTitle,
     IonToolbar,
+    useIonLoading,
     useIonViewDidLeave,
     useIonViewWillEnter,
 } from '@ionic/react';
@@ -42,6 +44,7 @@ const ReceiptForm = () => {
     const params = useParams<{ id: string }>();
     const [isOpen, setIsOpen] = useState(false);
     const { takePhoto } = usePhotoGallery()
+    const [isLoading, setIsLoading] = useState(false);
 
     useIonViewWillEnter(() => {
         const user = getCurrentUser()
@@ -87,6 +90,7 @@ const ReceiptForm = () => {
             setReceiptToSave({ ...receiptToSave, image: event.target.result })
         }
         reader.readAsDataURL(fileChangeEvent.target.files[0]);
+        setIsOpen(false);
     };
 
     const takePicture = () => {
@@ -118,6 +122,7 @@ const ReceiptForm = () => {
 
     const sendReceipt = async (e: any) => {
         e.preventDefault()
+        setIsLoading(true);
         if (!img && !receiptToSave.image) {
             console.log("Not file")
             return
@@ -134,10 +139,12 @@ const ReceiptForm = () => {
         createReceiptFor(uid, receiptToSave)
             .then(() => history.push("/home"))
             .catch(ex => console.error(ex))
+            .finally(() => setIsLoading(false));
     }
 
     return (
         <form className="max-w-md mx-auto receipt-form relative items-center block max-w-sm p-6 bg-white dark:bg-gray-800 dark:border-gray-800 dark:hover:bg-gray-700" onSubmit={sendReceipt}>
+            <IonLoading isOpen={isLoading} />
             <div className="relative z-0 w-full mb-5 group">
                 <InputText name="name" value={receiptToSave.name} onChange={onChange} type='text' />
             </div>
