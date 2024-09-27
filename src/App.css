@@ -2,3 +2,7 @@ ion-avatar img {
     width: 100% !important;
     height: 100% !important;
 }
+
+ion-content {
+    --ion-background-color: #F7F7F7;
+}

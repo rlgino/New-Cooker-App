@@ -7,6 +7,7 @@ import {
   IonPage,
   IonRefresher,
   IonRefresherContent,
+  IonTitle,
   IonToolbar,
   useIonViewDidEnter
 } from '@ionic/react';
@@ -33,7 +34,7 @@ const Home: React.FC = () => {
     }
 
     registerNotifications().then(() => {
-      if(user.phoneNumber) addListeners(user.phoneNumber)
+      if (user.phoneNumber) addListeners(user.phoneNumber)
       else console.log("No notification added")
     })
 
@@ -63,33 +64,21 @@ const Home: React.FC = () => {
 
   return (
     <IonPage id="home-page">
-      <IonToolbar>
-        <div className='header'>
-          <div className='welcome'>
-            <div>Welcome 👋</div>
-            <h3 className='title'>{user}</h3>
+      <IonContent fullscreen>
+        <div className='width-m flex justify-between'>
+          <div className='flex flex-col'>
+            <div className='pl-3'>Welcome, {user} 👋</div>
+            <IonTitle className='flex'>What would you like<br /> to cook today?</IonTitle>
           </div>
-          <IonAvatar aria-hidden="true" slot="start" className='avatar' onClick={() => signOut()}>
-            <img alt="" src={imgUrl} />
+          <IonAvatar aria-hidden="true" slot="end" className='size-16 m-2' onClick={() => signOut()}>
+            <img alt={user} src={imgUrl} />
           </IonAvatar>
         </div>
-      </IonToolbar>
-      <IonContent fullscreen>
         <IonRefresher slot="fixed" onIonRefresh={refresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        <div className='filters'>
-          <form id="form" role="search" className='filters-form'>
-            <input type="search" id="query" name="q"
-              placeholder="Search..." className='filters-input'
-              aria-label="Search through site content" />
-            <IonIcon icon={search} size='large' className='searchIcon'></IonIcon>
-          </form>
-          <IonIcon icon={options} size='large' className='more-filters'></IonIcon>
-        </div>
-
-        <div>
+        <div className='grid grid-cols-2'>
           {
             receipts.length > 0 ? receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />) : <div>No tiene recetas creadas</div>
           }

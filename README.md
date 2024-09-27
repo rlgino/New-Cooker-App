@@ -3,18 +3,14 @@
 ## Overview
 This is a simple application for demostrating knowledge in Ionic and React. Here I'm using Firebase as storage.
 
-## Hexagonal architecture
-Hexagonal architecture, also known as Ports and Adapters architecture or the Onion architecture, is a design pattern that emphasizes the separation of concerns in software development. It helps in creating a modular and flexible structure for applications. In a hexagonal architecture, the core business logic is at the center, surrounded by layers representing different concerns. These layers include the application's input and output mechanisms, such as databases, user interfaces, and external services.
-
-When you mention using hexagonal architecture oriented to the frontend for organizing files in your application, it suggests that you have applied this architectural pattern specifically to the frontend part of your system.
-
 ## Screenshots
 
 TBD
 
 ### How to use?
-TBD
+You can download the application from this [apk-debug.apk](https://drive.google.com/file/d/1dQ6xFWLtEf6_MkedooZrbK9j9fxqDUkO/view?usp=drive_link)
 
+### Running locally
 Meanwhile you can download the code and run `ionic run build` and pasting your firebase keys in `src/app/firebase.ts`.
 
 ### Structure
@@ -42,7 +38,7 @@ npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 3. Create a tailwind.config.js file in root
-```json
+```js
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -80,7 +76,7 @@ TBD
 * Email: gino.luraschi@gmail.com
 
 ## Status
-First version comming with upload pictures and update receipts.
+First version uploaded with minimal functionallity.
 
 ## Coming...
-* Receipts creating and allow users to upload pictures...
+* Change in styling (https://dribbble.com/shots/20792040-Cookpedia-Food-Recipe-Mobile-App)
