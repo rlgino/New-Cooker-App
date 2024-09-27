@@ -1,10 +1,11 @@
-import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonModal, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react"
+import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonLoading, IonModal, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react"
 import { getCurrentUser, registerPhoneNumber, renderRecaptcha, updateUser, validateOtp } from "../firebase/auth"
 import { useState } from "react"
 import { useHistory } from "react-router"
 import { uploadProfileImage } from "../firebase/storage"
 import { defaultImage } from "../domain/default"
 import { updateNumber } from "../firebase/database"
+import InputText from "../components/inputText"
 
 const SettingsPage: React.FC = () => {
     const [uid, setUid] = useState("")
@@ -96,28 +97,17 @@ const SettingsPage: React.FC = () => {
         </IonHeader>
         <IonContent>
             <form className="max-w-md mx-auto p-6" onSubmit={(e) => update(e)} >
-                <div className="w-full flex justify-center">
+                <IonLoading isOpen={saving} />
+                <div className="w-full flex justify-center mb-5">
                     <IonAvatar aria-hidden="true" onClick={changeProfileImage}>
                         <img alt="" src={imgUrl} />
                     </IonAvatar>
                 </div>
                 <div className="grid md:grid-cols-2 md:gap-6">
-                    <div className="relative z-0 w-full mb-5 group">
-                        <input type="text" name="floating_first_name" id="floating_first_name"
-                            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            value={userName} onChange={e => setUserName(e.target.value)}
-                            placeholder=" " required />
-                        <label htmlFor="floating_first_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre</label>
-                    </div>
+                    <InputText name="floating_user_name" value={userName} onChange={(e: any) => setUserName(e.target.value)} type='text' />
                 </div>
                 <div className="grid md:grid-cols-2 md:gap-6">
-                    <div className="relative z-0 w-full mb-5 group">
-                        <input type="text" name="floating_email" id="floating_email" disabled={phoneValidated}
-                            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            value={email} onChange={e => setEmail(e.target.value)}
-                            placeholder=" " required />
-                        <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
-                    </div>
+                    <InputText name="floating_user_email" value={email} onChange={(e: any) => setEmail(e.target.value)} type='email' />
                 </div>
                 <div className="grid md:grid-cols-2 md:gap-6">
                     <div className="relative z-0 w-full mb-5 group">
@@ -125,7 +115,6 @@ const SettingsPage: React.FC = () => {
                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)}
                             placeholder=" " required />
-                        <label htmlFor="floating_phone_number" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Numero de telefono</label>
                     </div>
                 </div>
                 <div id="sign-in-button"></div>
@@ -168,7 +157,7 @@ const SettingsPage: React.FC = () => {
 
                 <button type="submit"
                     disabled={saving}
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    className="bg-primary bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     {saving ? "Guardando" : "Guardar"}
                 </button>
             </form>
