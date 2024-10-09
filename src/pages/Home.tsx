@@ -78,10 +78,12 @@ const Home: React.FC = () => {
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        <div className='grid grid-cols-2'>
-          {
-            receipts.length > 0 ? receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />) : <div>No tiene recetas creadas</div>
-          }
+        <div className='flex flex-wrap justify-center'>
+          <div className='flex flex-wrap'>
+            {
+              receipts.length > 0 ? receipts.map(receipt => <ReceiptListItem key={receipt.id} receipt={receipt} />) : <div>No tiene recetas creadas</div>
+            }
+          </div>
         </div>
       </IonContent>
 

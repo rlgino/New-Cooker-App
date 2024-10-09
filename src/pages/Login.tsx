@@ -49,8 +49,8 @@ const LoginPage: React.FC = () => {
 
     return <IonPage>
         <IonContent>
-            <form className="h-screen flex items-center form" onSubmit={e => createUser(e)}>
-                <div className="flex flex-col items-center w-full">
+            <form className="h-screen flex items-center justify-center form" onSubmit={e => createUser(e)}>
+                <div className="flex flex-col items-center w-full max-w-md">
                     <InputText value={user.userName} type="email" onChange={onChange} placeholder="Email" name="userName"/>
                     <InputText value={user.password} type="password" onChange={onChange} placeholder="Contraseña" name="password"/>
                     <button type="button"

@@ -17,7 +17,7 @@ const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) =
   }
 
   return (
-    <div className="card">
+    <div className="card max-w-44">
       <IonRouterLink href={`/new-receipt/${receipt.id}`}>
         <img src={receipt.image.toString()} alt="" className='object-cover size-44 rounded-lg' />
         <div className="p-1 flex justify-between items-start">
