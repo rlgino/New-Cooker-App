@@ -10,7 +10,7 @@
     "test.e2e": "cypress run",
     "test.unit": "vitest",
     "lint": "eslint",
-    "deploy": "npx ionic build --prod && npx firebase deploy --only hosting"
+    "deploy": "npx ionic build --prod && npx firebase deploy"
   },
   "dependencies": {
     "@capacitor-community/contacts": "^6.1.1",
