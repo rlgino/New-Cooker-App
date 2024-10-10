@@ -9,10 +9,11 @@
     "preview": "vite preview",
     "test.e2e": "cypress run",
     "test.unit": "vitest",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "npx ionic build --prod && npx firebase deploy --only hosting"
   },
   "dependencies": {
-    "@capacitor-community/contacts": "^5.0.4",
+    "@capacitor-community/contacts": "^6.1.1",
     "@capacitor/android": "^6.1.2",
     "@capacitor/app": "^6.0.0",
     "@capacitor/camera": "^6.0.0",

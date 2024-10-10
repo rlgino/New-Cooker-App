@@ -3,17 +3,14 @@ import { useState } from 'react';
 import {
   IonAvatar,
   IonContent,
-  IonIcon,
   IonPage,
   IonRefresher,
   IonRefresherContent,
   IonTitle,
-  IonToolbar,
   useIonViewDidEnter
 } from '@ionic/react';
 import './Home.css';
 import { Receipt } from '../domain/receipt';
-import { options, search } from 'ionicons/icons';
 import { getCurrentUser, userSignOut } from '../firebase/auth';
 import { useHistory } from 'react-router';
 import { listReceiptsFor } from '../services/receipts';
@@ -63,12 +60,11 @@ const Home: React.FC = () => {
   }
 
   return (
-    <IonPage id="home-page">
+    <IonPage>
       <IonContent fullscreen>
-        <div className='width-m flex justify-between'>
-          <div className='flex flex-col'>
-            <div className='pl-3'>Welcome, {user} 👋</div>
-            <IonTitle className='flex'>What would you like<br /> to cook today?</IonTitle>
+        <div className="flex justify-between items-center">
+          <div className="ion-text-wrap">
+            What would you like to cook today, {user}?
           </div>
           <IonAvatar aria-hidden="true" slot="end" className='size-16 m-2' onClick={() => signOut()}>
             <img alt={user} src={imgUrl} />
