@@ -80,3 +80,4 @@ First version uploaded with minimal functionallity.
 
 ## Coming...
 * Change in styling (https://dribbble.com/shots/20792040-Cookpedia-Food-Recipe-Mobile-App)
+* Add pizza as spinning

@@ -9,7 +9,6 @@ import {
     IonThumbnail,
     IonTitle,
     IonToolbar,
-    useIonLoading,
     useIonViewDidLeave,
     useIonViewWillEnter,
 } from '@ionic/react';
@@ -54,10 +53,12 @@ const ReceiptForm = () => {
         }
         setUid(user.uid)
         if (params.id) {
+            setIsLoading(true)
             findReceiptFor(user.uid, params.id).then(rec => {
                 setReceiptToSave(rec)
                 setItems(rec.items)
                 setSteps(rec.steps)
+                setIsLoading(false)
             });
         }
     }, [])
@@ -191,7 +192,10 @@ const ReceiptForm = () => {
             <br />
             <StepsTable steps={steps} setSteps={setSteps} />
             <br />
-            <button type="submit" className="bg-primary bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">{params.id ? "Actualizar" : "Crear"}</button>
+            <div className='flex justify-between'>
+                <button type="button" onClick={() => history.push("/home")} className="bg-secondary hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-secondary font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700">Cancelar</button>
+                <button type="submit" className="bg-primary bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">{params.id ? "Actualizar" : "Crear"}</button>
+            </div>
         </form>
     );
 };

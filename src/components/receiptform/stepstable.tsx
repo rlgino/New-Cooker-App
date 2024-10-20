@@ -1,4 +1,4 @@
-import { IonIcon } from "@ionic/react";
+import { IonIcon, IonTextarea } from "@ionic/react";
 import { trashBin } from "ionicons/icons";
 import { FunctionComponent } from "react";
 
@@ -42,7 +42,7 @@ const StepsTable: FunctionComponent<StepsTableProps> = ({ steps, setSteps }) => 
                             <tr className="bg-white dark:bg-gray-800" key={`row-${i + 1}`}>
                                 <td className="flex content-center">
                                     {i + 1}.
-                                    <input type="text" name="nameProduct" key={`input-step-${i + 1}`}
+                                    <textarea name="nameProduct" key={`input-step-${i + 1}`}
                                         value={val} onChange={(e) => { setStep(i, e.target.value) }}
                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                         placeholder={`Agregue su paso ${i + 1}`} required />
