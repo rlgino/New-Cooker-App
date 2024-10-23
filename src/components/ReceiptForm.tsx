@@ -25,6 +25,7 @@ import ItemsTable from './receiptform/itemstable';
 import { camera } from 'ionicons/icons';
 import { usePhotoGallery } from '../hooks/useCamera';
 import InputText from './inputText';
+import { DEFAULT_IMAGE } from '../constants';
 
 const ReceiptForm = () => {
     const [receiptToSave, setReceiptToSave] = useState<Receipt>({
@@ -109,12 +110,12 @@ const ReceiptForm = () => {
     }
 
     const setDefaultImage = () => {
-        setReceiptToSave({ ...receiptToSave, image: "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg" })
+        setReceiptToSave({ ...receiptToSave, image: DEFAULT_IMAGE })
         setIsOpen(false)
     }
 
     const getPreview = (): string => {
-        return receiptToSave.image ? receiptToSave.image : "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
+        return receiptToSave.image ? receiptToSave.image : DEFAULT_IMAGE
     }
 
     const onChange = (e: any): void => {
@@ -124,10 +125,6 @@ const ReceiptForm = () => {
     const sendReceipt = async (e: any) => {
         e.preventDefault()
         setIsLoading(true);
-        if (!img && !receiptToSave.image) {
-            console.log("Not file")
-            return
-        }
         var url = receiptToSave.image
         if (img) {
             console.log("Loading image")
@@ -137,6 +134,7 @@ const ReceiptForm = () => {
 
         receiptToSave.steps = steps
         receiptToSave.items = items
+        console.table(receiptToSave)
         createReceiptFor(uid, receiptToSave)
             .then(() => history.push("/home"))
             .catch(ex => console.error(ex))

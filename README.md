@@ -9,6 +9,7 @@ TBD
 
 ### How to use?
 You can download the application from this [apk-debug.apk](https://drive.google.com/file/d/1dQ6xFWLtEf6_MkedooZrbK9j9fxqDUkO/view?usp=drive_link)
+Or you can access to the link https://recetario-2021.web.app/ where you can sign up
 
 ### Running locally
 Meanwhile you can download the code and run `ionic run build` and pasting your firebase keys in `src/app/firebase.ts`.

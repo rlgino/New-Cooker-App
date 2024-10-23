@@ -3,12 +3,19 @@
 import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import { Receipt } from "../domain/receipt";
 import app from "./firebase";
+import { DEFAULT_IMAGE } from "../constants";
+
+
+export const deleteReceiptFor = (uid: string, receiptID: string) => {
+    const db = getDatabase(app);
+    remove(ref(db, `user/${uid}/receipts/${receiptID}`))
+}
 
 export const setReceiptFor = (uid: string, receipt: Receipt) => {
     const db = getDatabase(app);
     set(ref(db, `user/${uid}/receipts/${receipt.id}`), {
         name: receipt.name,
-        image: receipt.image,
+        image: receipt.image ? receipt.image : DEFAULT_IMAGE,
         steps: receipt.steps,
         items: receipt.items
     });

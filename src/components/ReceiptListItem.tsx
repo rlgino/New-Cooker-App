@@ -1,8 +1,11 @@
 import './ReceiptListItem.css';
 import { Receipt } from '../domain/receipt';
-import { IonRouterLink } from '@ionic/react';
+import { IonIcon, IonRouterLink } from '@ionic/react';
 import ShareReceiptDialog from './ShareReceipt';
 import { useState } from 'react';
+import { trash } from 'ionicons/icons';
+import { getCurrentUser } from '../firebase/auth';
+import { deleteReceiptFor } from '../firebase/database';
 
 interface ReceiptListItemProps {
   receipt: Receipt;
@@ -10,14 +13,28 @@ interface ReceiptListItemProps {
 
 const ReceiptListItem: React.FC<ReceiptListItemProps> = ({ receipt: receipt }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const shareReceipt = (e: any) => {
     e.preventDefault()
     setIsOpen(true)
   }
 
+  const deleteItem = () => {
+    const user = getCurrentUser()
+    if (!user) return
+    deleteReceiptFor(user.uid, receipt.id)
+    setIsDeleted(true)
+  }
+  if (isDeleted) {
+    return (<></>)
+  }
+
   return (
     <div className="card max-w-44">
+      <div className='relative flex max-w justify-end mr-1' onClick={() => deleteItem()}>
+        <IonIcon icon={trash} size='medium' className="m-1 absolute bg-danger inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 z-40" />
+      </div>
       <IonRouterLink href={`/new-receipt/${receipt.id}`}>
         <img src={receipt.image.toString()} alt="" className='object-cover size-44 rounded-lg' />
         <div className="p-1 flex justify-between items-start">
