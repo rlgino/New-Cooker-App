@@ -2,6 +2,7 @@ import { IonButton, IonButtons, IonCheckbox, IonContent, IonHeader, IonInput, Io
 import { useEffect, useState } from "react";
 import { findUid, shareReceipt } from "../firebase/database";
 import { Contacts } from "@capacitor-community/contacts";
+import { Capacitor } from "@capacitor/core";
 
 interface ShareReceiptDialogParams {
     isOpen: any;
@@ -16,6 +17,7 @@ const ShareReceiptDialog: React.FC<ShareReceiptDialogParams> = ({ isOpen: isOpen
     const [contacts, setContacts] = useState<Contact[]>([])
 
     useEffect(() => {
+        if (!Capacitor.isNativePlatform()) return;
         Contacts.getContacts({
             projection: {
                 name: true,

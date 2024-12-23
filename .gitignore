@@ -32,4 +32,4 @@ yarn-error.log*
 firebase.ts
 .gitsecret/keys/random_seed
 !*.secret
-.firebase
+.firebase/*
