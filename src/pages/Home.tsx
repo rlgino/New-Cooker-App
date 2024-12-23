@@ -25,6 +25,7 @@ const Home: React.FC = () => {
 
   useIonViewDidEnter(() => {
     const user = getCurrentUser()
+    console.log(`User: ${user}`)
     if (!user) {
       history.push("/register")
       return

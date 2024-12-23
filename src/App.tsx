@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { IonApp, IonTabs, IonRouterOutlet, setupIonicReact, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import CreateReceipt from './pages/CreateReceipt'
@@ -34,9 +34,9 @@ import { useState } from 'react';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [hideTabs, setHideTabs] = useState(false)
+  const [userNotLogged, setUserNotLogged] = useState(false)
   subscribeToUserChange((userLogged: boolean)=> {
-    setHideTabs(!userLogged)
+    setUserNotLogged(!userLogged)
   })
   
   return (
@@ -45,7 +45,9 @@ const App: React.FC = () => {
         <IonTabs>
           <IonRouterOutlet>
             <Route path="/" exact={true}>
-              <Redirect to="/home" />
+              {
+                userNotLogged ? <Redirect to="/login" /> : <Redirect to="/home" />
+              }
             </Route>
             <Route path="/home" exact={true}>
               <Home />
@@ -67,7 +69,7 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet>
   
-          <IonTabBar slot="bottom" hidden={hideTabs}>
+          <IonTabBar slot="bottom" hidden={userNotLogged}>
             <IonTabButton tab="home" href="/home">
               <IonIcon icon={home} />
               <IonLabel>Mis recetas</IonLabel>
