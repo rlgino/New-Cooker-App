@@ -1,6 +1,6 @@
 import { IonIcon, IonTextarea } from "@ionic/react";
 import { trashBin } from "ionicons/icons";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 
 interface StepsTableProps {
     steps: string[],
@@ -12,9 +12,25 @@ const StepsTable: FunctionComponent<StepsTableProps> = ({ steps, setSteps }) => 
     const addStep = () => {
         setSteps(steps.concat(""))
     }
+    useEffect(() => {
+        steps.forEach((_, index) => {
+            const textArea = document.getElementById(`input-step-${index + 1}`) as HTMLTextAreaElement
+            textArea.style.height = "1px";
+            textArea.style.height = (textArea.scrollHeight) + "px";
+        })
+    }, [steps])
 
     const setStep = (i: number, value: string) => {
-        const nextSteps = steps.map((step, index) => index === i ? value : step)
+        let nextSteps = [];
+        if (value.indexOf("\n") !== -1) {
+            const values = value.split("\n");
+            nextSteps = steps.map((step, index) => index === i ? values[0] : step)
+            for (let j = 1; j < values.length; j++) {
+                nextSteps.push(values[j])
+            }
+        } else {
+            nextSteps = steps.map((step, index) => index === i ? value : step)
+        }
         setSteps(nextSteps)
     }
 
@@ -40,11 +56,12 @@ const StepsTable: FunctionComponent<StepsTableProps> = ({ steps, setSteps }) => 
                     {
                         steps.map((val, i) => (
                             <tr className="bg-white dark:bg-gray-800" key={`row-${i + 1}`}>
-                                <td className="flex content-center">
+                                <td className="flex justify-between items-center">
                                     {i + 1}.
                                     <textarea name="nameProduct" key={`input-step-${i + 1}`}
+                                        id={`input-step-${i + 1}`}
                                         value={val} onChange={(e) => { setStep(i, e.target.value) }}
-                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        className="mb-1 block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                         placeholder={`Agregue su paso ${i + 1}`} required />
                                 </td>
                                 <td>

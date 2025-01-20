@@ -19,7 +19,38 @@ const ItemsTable: FunctionComponent<ItemsTableProps> = ({ items, setItems }) => 
         }))
     }
 
+    const extractNumber = (value: string): number => {
+        value = value.replace(/[^0-9]/g, '')
+        if (!value) return 1
+        try{
+            return parseInt(value)
+        } catch {
+            return 0
+        }
+    }
+
     const changeName = (i: number, value: string) => {
+        if (value.indexOf("\n") !== -1) {
+            const values = value.split("\n");
+            const newItems = items.map((item, index) => {
+                if (index === i)
+                    return {
+                        ...item,
+                        quantity: extractNumber(values[0]),
+                        name: values[0].replace(extractNumber(values[0]).toString(), "").trim()
+                    }
+                return item
+            })
+            for (let j = 1; j < values.length; j++) {
+                newItems.push({
+                    name: values[j].replace(extractNumber(values[j]).toString(), "").trim(),
+                    quantity: extractNumber(values[j]),
+                    measureUnity: ""
+                })
+            }
+            setItems(newItems)
+            return
+        }
         const newItems = items.map((item, index) => {
             if (index === i)
                 return {
@@ -83,8 +114,8 @@ const ItemsTable: FunctionComponent<ItemsTableProps> = ({ items, setItems }) => 
                         items.map((item, i) => (
                             <tr className="bg-white dark:bg-gray-800" key={`row-item-${i + 1}`}>
                                 <th scope="row" className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <input type="text" name="nameProduct" value={item.name} onChange={(e) => changeName(i, e.target.value)}
-                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                    <textarea name="nameProduct" value={item.name} onChange={(e) => changeName(i, e.target.value)}
+                                        className="block py-1 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                         placeholder=" " required />
                                 </th>
                                 <td className="px-2 py-1">
